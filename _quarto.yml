@@ -13,8 +13,8 @@ book:
       email: edzer.pebesma@uni-muenster.de
       url: https://www.uni-muenster.de/Geoinformatics/institute/staff/index.php/119/Edzer_Pebesma
       affiliations:
-      - name: Universität Münster
-        url: https://www.uni-muenster.de/en/
+      - name: Institute for Geoinformatics, Universität Münster
+        url: https://www.uni-muenster.de/Geoinformatics/en/index.html
         city: Münster
         country: Germany
   date: today
