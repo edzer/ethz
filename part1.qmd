@@ -93,8 +93,10 @@ Simple feature geometries are zero-dimensional (points), one-dimensional (linest
 ### Intro to `sf` and `stars`
 
 -   Briefly: `sf` provides classes and methods for *simple features*
-    -   a feature is a "thing", with geometrical properties (point(s), line(s), polygon(s)) and attributes
-    -   `sf` stores data in `data.frame`s with a list-column (of class `sfc`) that holds the geometries
+    -  a feature is a "thing", with geometrical properties (point(s), line(s), polygon(s)) and attributes
+    -  `sf` stores data in `data.frame`s with a list-column (of class `sfc`) that holds the geometries
+    - nearly 1000 R packages depend on `sf`
+    - **caveat**: there are lots of high quality spatial R packages that provide functionality similar to `sf`, but which are not discussed here (terra, wk, geos, proj, mapview, etc)
 
 ::: {.callout-tip title="the Simple Feature standard"}
 "Simple Feature Access" is an [open standard](https://www.ogc.org/standard/sfa/) for data with vector geometries. It defines a set of classes for geometries and operations on them.

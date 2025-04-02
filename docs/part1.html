@@ -395,6 +395,10 @@ Summary
 <li>a feature is a “thing”, with geometrical properties (point(s), line(s), polygon(s)) and attributes</li>
 <li>
 <code>sf</code> stores data in <code>data.frame</code>s with a list-column (of class <code>sfc</code>) that holds the geometries</li>
+<li>nearly 1000 R packages depend on <code>sf</code>
+</li>
+<li>
+<strong>caveat</strong>: there are lots of high quality spatial R packages that provide functionality similar to <code>sf</code>, but which are not discussed here (terra, wk, geos, proj, mapview, etc)</li>
 </ul>
 </li>
 </ul>
@@ -1372,376 +1376,378 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb8-95"><a href="#cb8-95" aria-hidden="true" tabindex="-1"></a><span class="fu">### Intro to `sf` and `stars`</span></span>
 <span id="cb8-96"><a href="#cb8-96" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-97"><a href="#cb8-97" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Briefly: <span class="in">`sf`</span> provides classes and methods for *simple features*</span>
-<span id="cb8-98"><a href="#cb8-98" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>a feature is a "thing", with geometrical properties (point(s), line(s), polygon(s)) and attributes</span>
-<span id="cb8-99"><a href="#cb8-99" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span><span class="in">`sf`</span> stores data in <span class="in">`data.frame`</span>s with a list-column (of class <span class="in">`sfc`</span>) that holds the geometries</span>
-<span id="cb8-100"><a href="#cb8-100" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-101"><a href="#cb8-101" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip title="the Simple Feature standard"}</span>
-<span id="cb8-102"><a href="#cb8-102" aria-hidden="true" tabindex="-1"></a>"Simple Feature Access" is an <span class="co">[</span><span class="ot">open standard</span><span class="co">](https://www.ogc.org/standard/sfa/)</span> for data with vector geometries. It defines a set of classes for geometries and operations on them.</span>
-<span id="cb8-103"><a href="#cb8-103" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-104"><a href="#cb8-104" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>"simple" refers to curves that are "simply" represented by points connected by straight lines</span>
-<span id="cb8-105"><a href="#cb8-105" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>connecting lines are not allowed to <span class="co">[</span><span class="ot">self-intersect</span><span class="co">](https://r-spatial.org/book/03-Geometries.html#sec-valid)</span></span>
-<span id="cb8-106"><a href="#cb8-106" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>polygons can have holes, and have validity constraints: holes cannot extrude the outer ring etc.</span>
-<span id="cb8-107"><a href="#cb8-107" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>All spatial software uses this: ArcGIS, QGIS, PostGIS, other spatial databases, ...</span>
-<span id="cb8-108"><a href="#cb8-108" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb8-109"><a href="#cb8-109" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-110"><a href="#cb8-110" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Functions and methods start with `st_`</span></span>
+<span id="cb8-98"><a href="#cb8-98" aria-hidden="true" tabindex="-1"></a><span class="ss">    -  </span>a feature is a "thing", with geometrical properties (point(s), line(s), polygon(s)) and attributes</span>
+<span id="cb8-99"><a href="#cb8-99" aria-hidden="true" tabindex="-1"></a><span class="ss">    -  </span><span class="in">`sf`</span> stores data in <span class="in">`data.frame`</span>s with a list-column (of class <span class="in">`sfc`</span>) that holds the geometries</span>
+<span id="cb8-100"><a href="#cb8-100" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span>nearly 1000 R packages depend on <span class="in">`sf`</span></span>
+<span id="cb8-101"><a href="#cb8-101" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span>**caveat**: there are lots of high quality spatial R packages that provide functionality similar to <span class="in">`sf`</span>, but which are not discussed here (terra, wk, geos, proj, mapview, etc)</span>
+<span id="cb8-102"><a href="#cb8-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-103"><a href="#cb8-103" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip title="the Simple Feature standard"}</span>
+<span id="cb8-104"><a href="#cb8-104" aria-hidden="true" tabindex="-1"></a>"Simple Feature Access" is an <span class="co">[</span><span class="ot">open standard</span><span class="co">](https://www.ogc.org/standard/sfa/)</span> for data with vector geometries. It defines a set of classes for geometries and operations on them.</span>
+<span id="cb8-105"><a href="#cb8-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-106"><a href="#cb8-106" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>"simple" refers to curves that are "simply" represented by points connected by straight lines</span>
+<span id="cb8-107"><a href="#cb8-107" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>connecting lines are not allowed to <span class="co">[</span><span class="ot">self-intersect</span><span class="co">](https://r-spatial.org/book/03-Geometries.html#sec-valid)</span></span>
+<span id="cb8-108"><a href="#cb8-108" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>polygons can have holes, and have validity constraints: holes cannot extrude the outer ring etc.</span>
+<span id="cb8-109"><a href="#cb8-109" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>All spatial software uses this: ArcGIS, QGIS, PostGIS, other spatial databases, ...</span>
+<span id="cb8-110"><a href="#cb8-110" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb8-111"><a href="#cb8-111" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-112"><a href="#cb8-112" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>as in: <span class="in">`st_area()`</span></span>
+<span id="cb8-112"><a href="#cb8-112" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Functions and methods start with `st_`</span></span>
 <span id="cb8-113"><a href="#cb8-113" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-114"><a href="#cb8-114" aria-hidden="true" tabindex="-1"></a><span class="fu">#### `sf` operators, how to understand?</span></span>
+<span id="cb8-114"><a href="#cb8-114" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>as in: <span class="in">`st_area()`</span></span>
 <span id="cb8-115"><a href="#cb8-115" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-116"><a href="#cb8-116" aria-hidden="true" tabindex="-1"></a>Package <span class="in">`sf`</span> has objects at three nested "<span class="co">[</span><span class="ot">levels</span><span class="co">](https://r-spatial.org/book/07-Introsf.html#creation)</span>":</span>
+<span id="cb8-116"><a href="#cb8-116" aria-hidden="true" tabindex="-1"></a><span class="fu">#### `sf` operators, how to understand?</span></span>
 <span id="cb8-117"><a href="#cb8-117" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-118"><a href="#cb8-118" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="in">`sfg`</span>: a single geometry (without coordinate reference system); contained in:</span>
+<span id="cb8-118"><a href="#cb8-118" aria-hidden="true" tabindex="-1"></a>Package <span class="in">`sf`</span> has objects at three nested "<span class="co">[</span><span class="ot">levels</span><span class="co">](https://r-spatial.org/book/07-Introsf.html#creation)</span>":</span>
 <span id="cb8-119"><a href="#cb8-119" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-120"><a href="#cb8-120" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="in">`sfc`</span>: a set of <span class="in">`sfg`</span> geometries (<span class="in">`list`</span>), with a coordinate reference system and bounding box; contained in:</span>
+<span id="cb8-120"><a href="#cb8-120" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="in">`sfg`</span>: a single geometry (without coordinate reference system); contained in:</span>
 <span id="cb8-121"><a href="#cb8-121" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-122"><a href="#cb8-122" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="in">`sf`</span>: a <span class="in">`data.frame`</span> or <span class="in">`tibble`</span> with at least one geometry (<span class="in">`sfc`</span>) column</span>
+<span id="cb8-122"><a href="#cb8-122" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="in">`sfc`</span>: a set of <span class="in">`sfg`</span> geometries (<span class="in">`list`</span>), with a coordinate reference system and bounding box; contained in:</span>
 <span id="cb8-123"><a href="#cb8-123" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-124"><a href="#cb8-124" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Operations *not* involving geometry (<span class="in">`data.frame`</span>; base R; tidyverse)</span>
+<span id="cb8-124"><a href="#cb8-124" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="in">`sf`</span>: a <span class="in">`data.frame`</span> or <span class="in">`tibble`</span> with at least one geometry (<span class="in">`sfc`</span>) column</span>
 <span id="cb8-125"><a href="#cb8-125" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-126"><a href="#cb8-126" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>geometry column + <span class="in">`sf`</span> class is sticky!</span>
-<span id="cb8-127"><a href="#cb8-127" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>this can be convenient, and sometimes annoying</span>
-<span id="cb8-128"><a href="#cb8-128" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>use <span class="in">`as.data.frame`</span> or <span class="in">`as_tibble`</span> to strip the <span class="in">`sf`</span> class label</span>
-<span id="cb8-129"><a href="#cb8-129" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-130"><a href="#cb8-130" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Operations involving *only* geometry</span>
+<span id="cb8-126"><a href="#cb8-126" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Operations *not* involving geometry (<span class="in">`data.frame`</span>; base R; tidyverse)</span>
+<span id="cb8-127"><a href="#cb8-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-128"><a href="#cb8-128" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>geometry column + <span class="in">`sf`</span> class is sticky!</span>
+<span id="cb8-129"><a href="#cb8-129" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>this can be convenient, and sometimes annoying</span>
+<span id="cb8-130"><a href="#cb8-130" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>use <span class="in">`as.data.frame`</span> or <span class="in">`as_tibble`</span> to strip the <span class="in">`sf`</span> class label</span>
 <span id="cb8-131"><a href="#cb8-131" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-132"><a href="#cb8-132" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>**predicates** (resulting <span class="in">`TRUE`</span>/<span class="in">`FALSE`</span>)</span>
-<span id="cb8-133"><a href="#cb8-133" aria-hidden="true" tabindex="-1"></a><span class="ss">        -   </span>unary</span>
-<span id="cb8-134"><a href="#cb8-134" aria-hidden="true" tabindex="-1"></a><span class="ss">        -   </span>binary: <span class="co">[</span><span class="ot">DE9-IM</span><span class="co">](https://en.wikipedia.org/wiki/DE-9IM)</span>; work on two sets, result <span class="in">`sgbp`</span>, which is a sparse logical matrix representation</span>
-<span id="cb8-135"><a href="#cb8-135" aria-hidden="true" tabindex="-1"></a><span class="ss">            -   </span><span class="in">`is_within_distance`</span></span>
-<span id="cb8-136"><a href="#cb8-136" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>**measures**</span>
-<span id="cb8-137"><a href="#cb8-137" aria-hidden="true" tabindex="-1"></a><span class="ss">        -   </span>unary: <span class="in">`length`</span>, <span class="in">`area`</span></span>
-<span id="cb8-138"><a href="#cb8-138" aria-hidden="true" tabindex="-1"></a><span class="ss">        -   </span>binary: <span class="in">`distance`</span>, <span class="in">`by_element = FALSE`</span></span>
-<span id="cb8-139"><a href="#cb8-139" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>**transformers**</span>
-<span id="cb8-140"><a href="#cb8-140" aria-hidden="true" tabindex="-1"></a><span class="ss">        -   </span>unary: <span class="in">`buffer`</span>, <span class="in">`centroid`</span></span>
-<span id="cb8-141"><a href="#cb8-141" aria-hidden="true" tabindex="-1"></a><span class="ss">        -   </span>binary: <span class="in">`intersection`</span>, <span class="in">`union`</span>, <span class="in">`difference`</span>, <span class="in">`symdifference`</span></span>
-<span id="cb8-142"><a href="#cb8-142" aria-hidden="true" tabindex="-1"></a><span class="ss">        -   </span>n-ary: <span class="in">`intersection`</span>, <span class="in">`difference`</span></span>
-<span id="cb8-143"><a href="#cb8-143" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-144"><a href="#cb8-144" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Operations involving geometry *and* attributes</span>
+<span id="cb8-132"><a href="#cb8-132" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Operations involving *only* geometry</span>
+<span id="cb8-133"><a href="#cb8-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-134"><a href="#cb8-134" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>**predicates** (resulting <span class="in">`TRUE`</span>/<span class="in">`FALSE`</span>)</span>
+<span id="cb8-135"><a href="#cb8-135" aria-hidden="true" tabindex="-1"></a><span class="ss">        -   </span>unary</span>
+<span id="cb8-136"><a href="#cb8-136" aria-hidden="true" tabindex="-1"></a><span class="ss">        -   </span>binary: <span class="co">[</span><span class="ot">DE9-IM</span><span class="co">](https://en.wikipedia.org/wiki/DE-9IM)</span>; work on two sets, result <span class="in">`sgbp`</span>, which is a sparse logical matrix representation</span>
+<span id="cb8-137"><a href="#cb8-137" aria-hidden="true" tabindex="-1"></a><span class="ss">            -   </span><span class="in">`is_within_distance`</span></span>
+<span id="cb8-138"><a href="#cb8-138" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>**measures**</span>
+<span id="cb8-139"><a href="#cb8-139" aria-hidden="true" tabindex="-1"></a><span class="ss">        -   </span>unary: <span class="in">`length`</span>, <span class="in">`area`</span></span>
+<span id="cb8-140"><a href="#cb8-140" aria-hidden="true" tabindex="-1"></a><span class="ss">        -   </span>binary: <span class="in">`distance`</span>, <span class="in">`by_element = FALSE`</span></span>
+<span id="cb8-141"><a href="#cb8-141" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>**transformers**</span>
+<span id="cb8-142"><a href="#cb8-142" aria-hidden="true" tabindex="-1"></a><span class="ss">        -   </span>unary: <span class="in">`buffer`</span>, <span class="in">`centroid`</span></span>
+<span id="cb8-143"><a href="#cb8-143" aria-hidden="true" tabindex="-1"></a><span class="ss">        -   </span>binary: <span class="in">`intersection`</span>, <span class="in">`union`</span>, <span class="in">`difference`</span>, <span class="in">`symdifference`</span></span>
+<span id="cb8-144"><a href="#cb8-144" aria-hidden="true" tabindex="-1"></a><span class="ss">        -   </span>n-ary: <span class="in">`intersection`</span>, <span class="in">`difference`</span></span>
 <span id="cb8-145"><a href="#cb8-145" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-146"><a href="#cb8-146" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>many of the above!</span>
-<span id="cb8-147"><a href="#cb8-147" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span><span class="in">`st_join`</span></span>
-<span id="cb8-148"><a href="#cb8-148" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span><span class="in">`aggregate`</span></span>
-<span id="cb8-149"><a href="#cb8-149" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span><span class="in">`st_interpolate_aw`</span>: requires expression whether variable is spatially *extensive* or *intensive*</span>
-<span id="cb8-150"><a href="#cb8-150" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-151"><a href="#cb8-151" aria-hidden="true" tabindex="-1"></a><span class="fu">#### `sf` and `spatstat`</span></span>
+<span id="cb8-146"><a href="#cb8-146" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Operations involving geometry *and* attributes</span>
+<span id="cb8-147"><a href="#cb8-147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-148"><a href="#cb8-148" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>many of the above!</span>
+<span id="cb8-149"><a href="#cb8-149" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span><span class="in">`st_join`</span></span>
+<span id="cb8-150"><a href="#cb8-150" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span><span class="in">`aggregate`</span></span>
+<span id="cb8-151"><a href="#cb8-151" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span><span class="in">`st_interpolate_aw`</span>: requires expression whether variable is spatially *extensive* or *intensive*</span>
 <span id="cb8-152"><a href="#cb8-152" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-153"><a href="#cb8-153" aria-hidden="true" tabindex="-1"></a>We can try to convert an <span class="in">`sf`</span> object to a <span class="in">`ppp`</span> (point pattern object in <span class="in">`spatstat`</span>):</span>
+<span id="cb8-153"><a href="#cb8-153" aria-hidden="true" tabindex="-1"></a><span class="fu">#### `sf` and `spatstat`</span></span>
 <span id="cb8-154"><a href="#cb8-154" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-155"><a href="#cb8-155" aria-hidden="true" tabindex="-1"></a><span class="in">```{r error=TRUE}</span></span>
-<span id="cb8-156"><a href="#cb8-156" aria-hidden="true" tabindex="-1"></a><span class="in">library(sf)</span></span>
-<span id="cb8-157"><a href="#cb8-157" aria-hidden="true" tabindex="-1"></a><span class="in">library(spatstat)</span></span>
-<span id="cb8-158"><a href="#cb8-158" aria-hidden="true" tabindex="-1"></a><span class="in">demo(nc, echo = FALSE, ask = FALSE)</span></span>
-<span id="cb8-159"><a href="#cb8-159" aria-hidden="true" tabindex="-1"></a><span class="in">pts = st_centroid(st_geometry(nc))</span></span>
-<span id="cb8-160"><a href="#cb8-160" aria-hidden="true" tabindex="-1"></a><span class="in">as.ppp(pts) # ???</span></span>
-<span id="cb8-161"><a href="#cb8-161" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb8-162"><a href="#cb8-162" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-163"><a href="#cb8-163" aria-hidden="true" tabindex="-1"></a>Note that <span class="in">`sf`</span> interprets a <span class="in">`NA`</span> CRS as: flat, projected (Cartesian) space.</span>
+<span id="cb8-155"><a href="#cb8-155" aria-hidden="true" tabindex="-1"></a>We can try to convert an <span class="in">`sf`</span> object to a <span class="in">`ppp`</span> (point pattern object in <span class="in">`spatstat`</span>):</span>
+<span id="cb8-156"><a href="#cb8-156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-157"><a href="#cb8-157" aria-hidden="true" tabindex="-1"></a><span class="in">```{r error=TRUE}</span></span>
+<span id="cb8-158"><a href="#cb8-158" aria-hidden="true" tabindex="-1"></a><span class="in">library(sf)</span></span>
+<span id="cb8-159"><a href="#cb8-159" aria-hidden="true" tabindex="-1"></a><span class="in">library(spatstat)</span></span>
+<span id="cb8-160"><a href="#cb8-160" aria-hidden="true" tabindex="-1"></a><span class="in">demo(nc, echo = FALSE, ask = FALSE)</span></span>
+<span id="cb8-161"><a href="#cb8-161" aria-hidden="true" tabindex="-1"></a><span class="in">pts = st_centroid(st_geometry(nc))</span></span>
+<span id="cb8-162"><a href="#cb8-162" aria-hidden="true" tabindex="-1"></a><span class="in">as.ppp(pts) # ???</span></span>
+<span id="cb8-163"><a href="#cb8-163" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb8-164"><a href="#cb8-164" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-165"><a href="#cb8-165" aria-hidden="true" tabindex="-1"></a><span class="fu">#### `stars`</span></span>
+<span id="cb8-165"><a href="#cb8-165" aria-hidden="true" tabindex="-1"></a>Note that <span class="in">`sf`</span> interprets a <span class="in">`NA`</span> CRS as: flat, projected (Cartesian) space.</span>
 <span id="cb8-166"><a href="#cb8-166" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-167"><a href="#cb8-167" aria-hidden="true" tabindex="-1"></a>Packages <span class="in">`stars`</span> is a package for (dense) array data, where array</span>
-<span id="cb8-168"><a href="#cb8-168" aria-hidden="true" tabindex="-1"></a>dimensions are associated with space and/or time (spatial time</span>
-<span id="cb8-169"><a href="#cb8-169" aria-hidden="true" tabindex="-1"></a>series, data cubes). It is built for simplicity (pure R), and for</span>
-<span id="cb8-170"><a href="#cb8-170" aria-hidden="true" tabindex="-1"></a>maximum integration with <span class="in">`sf`</span>.</span>
-<span id="cb8-171"><a href="#cb8-171" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-172"><a href="#cb8-172" aria-hidden="true" tabindex="-1"></a>R's <span class="in">`array`</span> is very powerful, but its metadata (<span class="in">`dimnames`</span>) is</span>
-<span id="cb8-173"><a href="#cb8-173" aria-hidden="true" tabindex="-1"></a>restricted to <span class="in">`character`</span> vectors.</span>
-<span id="cb8-174"><a href="#cb8-174" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-175"><a href="#cb8-175" aria-hidden="true" tabindex="-1"></a>A <span class="in">`stars`</span> object </span>
+<span id="cb8-167"><a href="#cb8-167" aria-hidden="true" tabindex="-1"></a><span class="fu">#### `stars`</span></span>
+<span id="cb8-168"><a href="#cb8-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-169"><a href="#cb8-169" aria-hidden="true" tabindex="-1"></a>Packages <span class="in">`stars`</span> is a package for (dense) array data, where array</span>
+<span id="cb8-170"><a href="#cb8-170" aria-hidden="true" tabindex="-1"></a>dimensions are associated with space and/or time (spatial time</span>
+<span id="cb8-171"><a href="#cb8-171" aria-hidden="true" tabindex="-1"></a>series, data cubes). It is built for simplicity (pure R), and for</span>
+<span id="cb8-172"><a href="#cb8-172" aria-hidden="true" tabindex="-1"></a>maximum integration with <span class="in">`sf`</span>.</span>
+<span id="cb8-173"><a href="#cb8-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-174"><a href="#cb8-174" aria-hidden="true" tabindex="-1"></a>R's <span class="in">`array`</span> is very powerful, but its metadata (<span class="in">`dimnames`</span>) is</span>
+<span id="cb8-175"><a href="#cb8-175" aria-hidden="true" tabindex="-1"></a>restricted to <span class="in">`character`</span> vectors.</span>
 <span id="cb8-176"><a href="#cb8-176" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-177"><a href="#cb8-177" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>is a list with R arrays (or pointers to files with such arrays)</span>
-<span id="cb8-178"><a href="#cb8-178" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>has a <span class="in">`dimensions`</span> attribute with all the metadata of the dimensions</span>
-<span id="cb8-179"><a href="#cb8-179" aria-hidden="true" tabindex="-1"></a>(offset, cellsize, units, reference system, point/block support)</span>
-<span id="cb8-180"><a href="#cb8-180" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-183"><a href="#cb8-183" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb8-184"><a href="#cb8-184" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stars)</span>
-<span id="cb8-185"><a href="#cb8-185" aria-hidden="true" tabindex="-1"></a><span class="fu">st_as_stars</span>() <span class="co"># default: 1 degree global Cartesian grid</span></span>
-<span id="cb8-186"><a href="#cb8-186" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb8-187"><a href="#cb8-187" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-188"><a href="#cb8-188" aria-hidden="true" tabindex="-1"></a><span class="fu">### Valid polygons</span></span>
+<span id="cb8-177"><a href="#cb8-177" aria-hidden="true" tabindex="-1"></a>A <span class="in">`stars`</span> object </span>
+<span id="cb8-178"><a href="#cb8-178" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-179"><a href="#cb8-179" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>is a list with R arrays (or pointers to files with such arrays)</span>
+<span id="cb8-180"><a href="#cb8-180" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>has a <span class="in">`dimensions`</span> attribute with all the metadata of the dimensions</span>
+<span id="cb8-181"><a href="#cb8-181" aria-hidden="true" tabindex="-1"></a>(offset, cellsize, units, reference system, point/block support)</span>
+<span id="cb8-182"><a href="#cb8-182" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-185"><a href="#cb8-185" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb8-186"><a href="#cb8-186" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stars)</span>
+<span id="cb8-187"><a href="#cb8-187" aria-hidden="true" tabindex="-1"></a><span class="fu">st_as_stars</span>() <span class="co"># default: 1 degree global Cartesian grid</span></span>
+<span id="cb8-188"><a href="#cb8-188" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb8-189"><a href="#cb8-189" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-190"><a href="#cb8-190" aria-hidden="true" tabindex="-1"></a>Valid polygons are polygons with several geometrical constraints, such as</span>
+<span id="cb8-190"><a href="#cb8-190" aria-hidden="true" tabindex="-1"></a><span class="fu">### Valid polygons</span></span>
 <span id="cb8-191"><a href="#cb8-191" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-192"><a href="#cb8-192" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>a closed ring means the first and last coordinate are identical,</span>
-<span id="cb8-193"><a href="#cb8-193" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>no edge is traversed twice,</span>
-<span id="cb8-194"><a href="#cb8-194" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>a hole can touch an outer ring only in a point, not along a line(string)</span>
-<span id="cb8-195"><a href="#cb8-195" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>holes are inside the outer ring</span>
-<span id="cb8-196"><a href="#cb8-196" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>outer rings are winded counter-clockwise (CCW), inner rings (holes) clockwise (CW)</span>
-<span id="cb8-197"><a href="#cb8-197" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-198"><a href="#cb8-198" aria-hidden="true" tabindex="-1"></a>In particular the last condition is often dropped, as the order of the rings already denotes</span>
-<span id="cb8-199"><a href="#cb8-199" aria-hidden="true" tabindex="-1"></a>their role, and winding can easily reversed. An exception of this is polygons on the sphere,</span>
-<span id="cb8-200"><a href="#cb8-200" aria-hidden="true" tabindex="-1"></a>where _both_ inside and outside have a limited area.</span>
-<span id="cb8-201"><a href="#cb8-201" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-202"><a href="#cb8-202" aria-hidden="true" tabindex="-1"></a><span class="fu">### DE-9IM: dimensionally extended nine-intersection model</span></span>
+<span id="cb8-192"><a href="#cb8-192" aria-hidden="true" tabindex="-1"></a>Valid polygons are polygons with several geometrical constraints, such as</span>
+<span id="cb8-193"><a href="#cb8-193" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-194"><a href="#cb8-194" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>a closed ring means the first and last coordinate are identical,</span>
+<span id="cb8-195"><a href="#cb8-195" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>no edge is traversed twice,</span>
+<span id="cb8-196"><a href="#cb8-196" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>a hole can touch an outer ring only in a point, not along a line(string)</span>
+<span id="cb8-197"><a href="#cb8-197" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>holes are inside the outer ring</span>
+<span id="cb8-198"><a href="#cb8-198" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>outer rings are winded counter-clockwise (CCW), inner rings (holes) clockwise (CW)</span>
+<span id="cb8-199"><a href="#cb8-199" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-200"><a href="#cb8-200" aria-hidden="true" tabindex="-1"></a>In particular the last condition is often dropped, as the order of the rings already denotes</span>
+<span id="cb8-201"><a href="#cb8-201" aria-hidden="true" tabindex="-1"></a>their role, and winding can easily reversed. An exception of this is polygons on the sphere,</span>
+<span id="cb8-202"><a href="#cb8-202" aria-hidden="true" tabindex="-1"></a>where _both_ inside and outside have a limited area.</span>
 <span id="cb8-203"><a href="#cb8-203" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-204"><a href="#cb8-204" aria-hidden="true" tabindex="-1"></a>The _intersection_ of two geometries is the set of</span>
-<span id="cb8-205"><a href="#cb8-205" aria-hidden="true" tabindex="-1"></a>points they have in common. This set can be empty (no</span>
-<span id="cb8-206"><a href="#cb8-206" aria-hidden="true" tabindex="-1"></a>points), 0-, 1-, or 2-dimensional. The DE-9IM defines the</span>
-<span id="cb8-207"><a href="#cb8-207" aria-hidden="true" tabindex="-1"></a>**relation** between two geometries as the intersection of I,</span>
-<span id="cb8-208"><a href="#cb8-208" aria-hidden="true" tabindex="-1"></a>B and E of the first and the second geometry (hence: 9, see</span>
-<span id="cb8-209"><a href="#cb8-209" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">here</span><span class="co">](https://r-spatial.org/book/03-Geometries.html#fig-de9im)</span>).</span>
-<span id="cb8-210"><a href="#cb8-210" aria-hidden="true" tabindex="-1"></a>The values can be <span class="in">`F`</span> (empty), <span class="in">`0`</span>, <span class="in">`1`</span> or <span class="in">`2`</span> (dimension if not</span>
-<span id="cb8-211"><a href="#cb8-211" aria-hidden="true" tabindex="-1"></a>empty), or <span class="in">`T`</span> (not empty: any of 0, 1 or 2). Using the resulting</span>
-<span id="cb8-212"><a href="#cb8-212" aria-hidden="true" tabindex="-1"></a>encoding (the relation), one can define special predicates, such as</span>
-<span id="cb8-213"><a href="#cb8-213" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-214"><a href="#cb8-214" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>A _covers_ B</span>
-<span id="cb8-215"><a href="#cb8-215" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>A _contains_ B</span>
-<span id="cb8-216"><a href="#cb8-216" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>A is _disjoint_ from B</span>
-<span id="cb8-217"><a href="#cb8-217" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>A _equals_ B</span>
-<span id="cb8-218"><a href="#cb8-218" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-219"><a href="#cb8-219" aria-hidden="true" tabindex="-1"></a>and many more on; one can also define custom queries with a specific pattern, e.g.:</span>
+<span id="cb8-204"><a href="#cb8-204" aria-hidden="true" tabindex="-1"></a><span class="fu">### DE-9IM: dimensionally extended nine-intersection model</span></span>
+<span id="cb8-205"><a href="#cb8-205" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-206"><a href="#cb8-206" aria-hidden="true" tabindex="-1"></a>The _intersection_ of two geometries is the set of</span>
+<span id="cb8-207"><a href="#cb8-207" aria-hidden="true" tabindex="-1"></a>points they have in common. This set can be empty (no</span>
+<span id="cb8-208"><a href="#cb8-208" aria-hidden="true" tabindex="-1"></a>points), 0-, 1-, or 2-dimensional. The DE-9IM defines the</span>
+<span id="cb8-209"><a href="#cb8-209" aria-hidden="true" tabindex="-1"></a>**relation** between two geometries as the intersection of I,</span>
+<span id="cb8-210"><a href="#cb8-210" aria-hidden="true" tabindex="-1"></a>B and E of the first and the second geometry (hence: 9, see</span>
+<span id="cb8-211"><a href="#cb8-211" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">here</span><span class="co">](https://r-spatial.org/book/03-Geometries.html#fig-de9im)</span>).</span>
+<span id="cb8-212"><a href="#cb8-212" aria-hidden="true" tabindex="-1"></a>The values can be <span class="in">`F`</span> (empty), <span class="in">`0`</span>, <span class="in">`1`</span> or <span class="in">`2`</span> (dimension if not</span>
+<span id="cb8-213"><a href="#cb8-213" aria-hidden="true" tabindex="-1"></a>empty), or <span class="in">`T`</span> (not empty: any of 0, 1 or 2). Using the resulting</span>
+<span id="cb8-214"><a href="#cb8-214" aria-hidden="true" tabindex="-1"></a>encoding (the relation), one can define special predicates, such as</span>
+<span id="cb8-215"><a href="#cb8-215" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-216"><a href="#cb8-216" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>A _covers_ B</span>
+<span id="cb8-217"><a href="#cb8-217" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>A _contains_ B</span>
+<span id="cb8-218"><a href="#cb8-218" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>A is _disjoint_ from B</span>
+<span id="cb8-219"><a href="#cb8-219" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>A _equals_ B</span>
 <span id="cb8-220"><a href="#cb8-220" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-221"><a href="#cb8-221" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>A _relates_ to B according to pattern <span class="in">`0FFFFFFF2`</span>.</span>
+<span id="cb8-221"><a href="#cb8-221" aria-hidden="true" tabindex="-1"></a>and many more on; one can also define custom queries with a specific pattern, e.g.:</span>
 <span id="cb8-222"><a href="#cb8-222" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-223"><a href="#cb8-223" aria-hidden="true" tabindex="-1"></a>which would detect polygon pairs touching in points, with no lines or areas in common. </span>
+<span id="cb8-223"><a href="#cb8-223" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>A _relates_ to B according to pattern <span class="in">`0FFFFFFF2`</span>.</span>
 <span id="cb8-224"><a href="#cb8-224" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-225"><a href="#cb8-225" aria-hidden="true" tabindex="-1"></a><span class="fu">### DE9-IM: challenges</span></span>
+<span id="cb8-225"><a href="#cb8-225" aria-hidden="true" tabindex="-1"></a>which would detect polygon pairs touching in points, with no lines or areas in common. </span>
 <span id="cb8-226"><a href="#cb8-226" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-227"><a href="#cb8-227" aria-hidden="true" tabindex="-1"></a>We often work with polygon data that form a _polygon coverage_,</span>
-<span id="cb8-228"><a href="#cb8-228" aria-hidden="true" tabindex="-1"></a>which is a tesselation of an area of interest, e.g.</span>
-<span id="cb8-229"><a href="#cb8-229" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-230"><a href="#cb8-230" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>countries in a continent, </span>
-<span id="cb8-231"><a href="#cb8-231" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>provinces in a country,</span>
-<span id="cb8-232"><a href="#cb8-232" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>counties in a province</span>
-<span id="cb8-233"><a href="#cb8-233" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-234"><a href="#cb8-234" aria-hidden="true" tabindex="-1"></a>When representing the polygons as a set of outer rings, it is hard</span>
-<span id="cb8-235"><a href="#cb8-235" aria-hidden="true" tabindex="-1"></a>to see whether there are no overlaps, and no gaps between polygons.</span>
-<span id="cb8-236"><a href="#cb8-236" aria-hidden="true" tabindex="-1"></a>Such overlaps or gaps could result from generalisation of polygon</span>
-<span id="cb8-237"><a href="#cb8-237" aria-hidden="true" tabindex="-1"></a>boundaries, one-by-one, and not by first identifying a common</span>
-<span id="cb8-238"><a href="#cb8-238" aria-hidden="true" tabindex="-1"></a>boundary and then generalizing that. </span>
-<span id="cb8-239"><a href="#cb8-239" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-240"><a href="#cb8-240" aria-hidden="true" tabindex="-1"></a>"True" geographic information systems (e.g. ArcGIS or GRASS GIS)</span>
-<span id="cb8-241"><a href="#cb8-241" aria-hidden="true" tabindex="-1"></a>use a topological representation of geometries that consists of</span>
-<span id="cb8-242"><a href="#cb8-242" aria-hidden="true" tabindex="-1"></a>edge nodes and (outer and inner) _boundaries_, and can do such</span>
-<span id="cb8-243"><a href="#cb8-243" aria-hidden="true" tabindex="-1"></a>simplifications without creating overlaps or gaps.</span>
-<span id="cb8-244"><a href="#cb8-244" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-245"><a href="#cb8-245" aria-hidden="true" tabindex="-1"></a>Another challenge is that polygon coverages represented as a set of</span>
-<span id="cb8-246"><a href="#cb8-246" aria-hidden="true" tabindex="-1"></a>simple feature polygons do not uniquely assign all points to a single</span>
-<span id="cb8-247"><a href="#cb8-247" aria-hidden="true" tabindex="-1"></a>unit. Points on a boundary common to two geometries intersect with</span>
-<span id="cb8-248"><a href="#cb8-248" aria-hidden="true" tabindex="-1"></a>both, there is no geometric argument to assign them unambiguously</span>
-<span id="cb8-249"><a href="#cb8-249" aria-hidden="true" tabindex="-1"></a>to only one of them.</span>
-<span id="cb8-250"><a href="#cb8-250" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-251"><a href="#cb8-251" aria-hidden="true" tabindex="-1"></a>Finally, as the Earth is round, the use of _straight lines_ is challenging:</span>
+<span id="cb8-227"><a href="#cb8-227" aria-hidden="true" tabindex="-1"></a><span class="fu">### DE9-IM: challenges</span></span>
+<span id="cb8-228"><a href="#cb8-228" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-229"><a href="#cb8-229" aria-hidden="true" tabindex="-1"></a>We often work with polygon data that form a _polygon coverage_,</span>
+<span id="cb8-230"><a href="#cb8-230" aria-hidden="true" tabindex="-1"></a>which is a tesselation of an area of interest, e.g.</span>
+<span id="cb8-231"><a href="#cb8-231" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-232"><a href="#cb8-232" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>countries in a continent, </span>
+<span id="cb8-233"><a href="#cb8-233" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>provinces in a country,</span>
+<span id="cb8-234"><a href="#cb8-234" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>counties in a province</span>
+<span id="cb8-235"><a href="#cb8-235" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-236"><a href="#cb8-236" aria-hidden="true" tabindex="-1"></a>When representing the polygons as a set of outer rings, it is hard</span>
+<span id="cb8-237"><a href="#cb8-237" aria-hidden="true" tabindex="-1"></a>to see whether there are no overlaps, and no gaps between polygons.</span>
+<span id="cb8-238"><a href="#cb8-238" aria-hidden="true" tabindex="-1"></a>Such overlaps or gaps could result from generalisation of polygon</span>
+<span id="cb8-239"><a href="#cb8-239" aria-hidden="true" tabindex="-1"></a>boundaries, one-by-one, and not by first identifying a common</span>
+<span id="cb8-240"><a href="#cb8-240" aria-hidden="true" tabindex="-1"></a>boundary and then generalizing that. </span>
+<span id="cb8-241"><a href="#cb8-241" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-242"><a href="#cb8-242" aria-hidden="true" tabindex="-1"></a>"True" geographic information systems (e.g. ArcGIS or GRASS GIS)</span>
+<span id="cb8-243"><a href="#cb8-243" aria-hidden="true" tabindex="-1"></a>use a topological representation of geometries that consists of</span>
+<span id="cb8-244"><a href="#cb8-244" aria-hidden="true" tabindex="-1"></a>edge nodes and (outer and inner) _boundaries_, and can do such</span>
+<span id="cb8-245"><a href="#cb8-245" aria-hidden="true" tabindex="-1"></a>simplifications without creating overlaps or gaps.</span>
+<span id="cb8-246"><a href="#cb8-246" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-247"><a href="#cb8-247" aria-hidden="true" tabindex="-1"></a>Another challenge is that polygon coverages represented as a set of</span>
+<span id="cb8-248"><a href="#cb8-248" aria-hidden="true" tabindex="-1"></a>simple feature polygons do not uniquely assign all points to a single</span>
+<span id="cb8-249"><a href="#cb8-249" aria-hidden="true" tabindex="-1"></a>unit. Points on a boundary common to two geometries intersect with</span>
+<span id="cb8-250"><a href="#cb8-250" aria-hidden="true" tabindex="-1"></a>both, there is no geometric argument to assign them unambiguously</span>
+<span id="cb8-251"><a href="#cb8-251" aria-hidden="true" tabindex="-1"></a>to only one of them.</span>
 <span id="cb8-252"><a href="#cb8-252" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-253"><a href="#cb8-253" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>projection or re-projection changes space non-linearly, causing a straight line to change path</span>
-<span id="cb8-254"><a href="#cb8-254" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>unprojected data are associated with a sphere (or ellipsoid), leading to **options** what "straight" means, e.g.</span>
-<span id="cb8-255"><a href="#cb8-255" aria-hidden="true" tabindex="-1"></a><span class="ss">    * </span>GeoJSON <span class="co">[</span><span class="ot">defines straight lines</span><span class="co">](https://datatracker.ietf.org/doc/html/rfc7946#section-3.1.1)</span> as straight in Plate Carree</span>
-<span id="cb8-256"><a href="#cb8-256" aria-hidden="true" tabindex="-1"></a><span class="ss">    * </span>s2geometry assumes <span class="co">[</span><span class="ot">great circle</span><span class="co">](https://en.wikipedia.org/wiki/Great-circle_distance)</span> segments</span>
-<span id="cb8-257"><a href="#cb8-257" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-258"><a href="#cb8-258" aria-hidden="true" tabindex="-1"></a><span class="fu">### vector and raster data</span></span>
+<span id="cb8-253"><a href="#cb8-253" aria-hidden="true" tabindex="-1"></a>Finally, as the Earth is round, the use of _straight lines_ is challenging:</span>
+<span id="cb8-254"><a href="#cb8-254" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-255"><a href="#cb8-255" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>projection or re-projection changes space non-linearly, causing a straight line to change path</span>
+<span id="cb8-256"><a href="#cb8-256" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>unprojected data are associated with a sphere (or ellipsoid), leading to **options** what "straight" means, e.g.</span>
+<span id="cb8-257"><a href="#cb8-257" aria-hidden="true" tabindex="-1"></a><span class="ss">    * </span>GeoJSON <span class="co">[</span><span class="ot">defines straight lines</span><span class="co">](https://datatracker.ietf.org/doc/html/rfc7946#section-3.1.1)</span> as straight in Plate Carree</span>
+<span id="cb8-258"><a href="#cb8-258" aria-hidden="true" tabindex="-1"></a><span class="ss">    * </span>s2geometry assumes <span class="co">[</span><span class="ot">great circle</span><span class="co">](https://en.wikipedia.org/wiki/Great-circle_distance)</span> segments</span>
 <span id="cb8-259"><a href="#cb8-259" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-260"><a href="#cb8-260" aria-hidden="true" tabindex="-1"></a>In addition to vector (point/line/polygon) data, we also have</span>
-<span id="cb8-261"><a href="#cb8-261" aria-hidden="true" tabindex="-1"></a>_raster data_. For _regular_ rasters, space is cut into square</span>
-<span id="cb8-262"><a href="#cb8-262" aria-hidden="true" tabindex="-1"></a>cells, aligned with $x$ and $y$.  Raster spaces _can_ tesselate, see</span>
-<span id="cb8-263"><a href="#cb8-263" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">here</span><span class="co">](https://r-spatial.org/book/03-Geometries.html#raster-tessellations)</span>.</span>
-<span id="cb8-264"><a href="#cb8-264" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-265"><a href="#cb8-265" aria-hidden="true" tabindex="-1"></a>In addition to regular rasters, we have rotated, sheared, rectilinear</span>
-<span id="cb8-266"><a href="#cb8-266" aria-hidden="true" tabindex="-1"></a>and curvilinear rasters. The raster _space_ is primarily flat,</span>
-<span id="cb8-267"><a href="#cb8-267" aria-hidden="true" tabindex="-1"></a>so any time we use it model data of the Earth surface, we violate</span>
-<span id="cb8-268"><a href="#cb8-268" aria-hidden="true" tabindex="-1"></a>the constant raster cell size concept. Many data are distributed</span>
-<span id="cb8-269"><a href="#cb8-269" aria-hidden="true" tabindex="-1"></a>as regular rasters in geodetic coordinates (long/lat space, e.g.,</span>
-<span id="cb8-270"><a href="#cb8-270" aria-hidden="true" tabindex="-1"></a>0.25 degree raster cells), mostly for convienience (of who?)</span>
-<span id="cb8-271"><a href="#cb8-271" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-272"><a href="#cb8-272" aria-hidden="true" tabindex="-1"></a>**Discrete global grids** are (semi-)regular tesselations of the</span>
-<span id="cb8-273"><a href="#cb8-273" aria-hidden="true" tabindex="-1"></a>Earth surface, using squares, triangles, or hexagons. Examples are:</span>
-<span id="cb8-274"><a href="#cb8-274" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-275"><a href="#cb8-275" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Google's <span class="co">[</span><span class="ot">s2geometry</span><span class="co">](http://s2geometry.io/)</span> (R package <span class="co">[</span><span class="ot">s2</span><span class="co">](https://cran.r-project.org/web/packages/s2/index.html)</span>)</span>
-<span id="cb8-276"><a href="#cb8-276" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Uber's <span class="co">[</span><span class="ot">H3</span><span class="co">](https://www.uber.com/en-FR/blog/h3/)</span> (R package <span class="co">[</span><span class="ot">h3r</span><span class="co">](https://cran.r-project.org/web/packages/h3r/index.html)</span>)</span>
-<span id="cb8-277"><a href="#cb8-277" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Kevin Sahr's <span class="co">[</span><span class="ot">dggrid</span><span class="co">](https://discreteglobal.wpengine.com/)</span> (also nested hexagons; R package <span class="co">[</span><span class="ot">dggridr</span><span class="co">](https://cran.r-project.org/web/packages/dggridR/index.html)</span>)</span>
-<span id="cb8-278"><a href="#cb8-278" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-279"><a href="#cb8-279" aria-hidden="true" tabindex="-1"></a>Interestingly, computer screens are raster devices, so any time</span>
-<span id="cb8-280"><a href="#cb8-280" aria-hidden="true" tabindex="-1"></a>we do view vector data on a computer screen, a rasterization has</span>
-<span id="cb8-281"><a href="#cb8-281" aria-hidden="true" tabindex="-1"></a>taken place.</span>
-<span id="cb8-282"><a href="#cb8-282" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-283"><a href="#cb8-283" aria-hidden="true" tabindex="-1"></a><span class="fu">### data cubes</span></span>
+<span id="cb8-260"><a href="#cb8-260" aria-hidden="true" tabindex="-1"></a><span class="fu">### vector and raster data</span></span>
+<span id="cb8-261"><a href="#cb8-261" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-262"><a href="#cb8-262" aria-hidden="true" tabindex="-1"></a>In addition to vector (point/line/polygon) data, we also have</span>
+<span id="cb8-263"><a href="#cb8-263" aria-hidden="true" tabindex="-1"></a>_raster data_. For _regular_ rasters, space is cut into square</span>
+<span id="cb8-264"><a href="#cb8-264" aria-hidden="true" tabindex="-1"></a>cells, aligned with $x$ and $y$.  Raster spaces _can_ tesselate, see</span>
+<span id="cb8-265"><a href="#cb8-265" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">here</span><span class="co">](https://r-spatial.org/book/03-Geometries.html#raster-tessellations)</span>.</span>
+<span id="cb8-266"><a href="#cb8-266" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-267"><a href="#cb8-267" aria-hidden="true" tabindex="-1"></a>In addition to regular rasters, we have rotated, sheared, rectilinear</span>
+<span id="cb8-268"><a href="#cb8-268" aria-hidden="true" tabindex="-1"></a>and curvilinear rasters. The raster _space_ is primarily flat,</span>
+<span id="cb8-269"><a href="#cb8-269" aria-hidden="true" tabindex="-1"></a>so any time we use it model data of the Earth surface, we violate</span>
+<span id="cb8-270"><a href="#cb8-270" aria-hidden="true" tabindex="-1"></a>the constant raster cell size concept. Many data are distributed</span>
+<span id="cb8-271"><a href="#cb8-271" aria-hidden="true" tabindex="-1"></a>as regular rasters in geodetic coordinates (long/lat space, e.g.,</span>
+<span id="cb8-272"><a href="#cb8-272" aria-hidden="true" tabindex="-1"></a>0.25 degree raster cells), mostly for convienience (of who?)</span>
+<span id="cb8-273"><a href="#cb8-273" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-274"><a href="#cb8-274" aria-hidden="true" tabindex="-1"></a>**Discrete global grids** are (semi-)regular tesselations of the</span>
+<span id="cb8-275"><a href="#cb8-275" aria-hidden="true" tabindex="-1"></a>Earth surface, using squares, triangles, or hexagons. Examples are:</span>
+<span id="cb8-276"><a href="#cb8-276" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-277"><a href="#cb8-277" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Google's <span class="co">[</span><span class="ot">s2geometry</span><span class="co">](http://s2geometry.io/)</span> (R package <span class="co">[</span><span class="ot">s2</span><span class="co">](https://cran.r-project.org/web/packages/s2/index.html)</span>)</span>
+<span id="cb8-278"><a href="#cb8-278" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Uber's <span class="co">[</span><span class="ot">H3</span><span class="co">](https://www.uber.com/en-FR/blog/h3/)</span> (R package <span class="co">[</span><span class="ot">h3r</span><span class="co">](https://cran.r-project.org/web/packages/h3r/index.html)</span>)</span>
+<span id="cb8-279"><a href="#cb8-279" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Kevin Sahr's <span class="co">[</span><span class="ot">dggrid</span><span class="co">](https://discreteglobal.wpengine.com/)</span> (also nested hexagons; R package <span class="co">[</span><span class="ot">dggridr</span><span class="co">](https://cran.r-project.org/web/packages/dggridR/index.html)</span>)</span>
+<span id="cb8-280"><a href="#cb8-280" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-281"><a href="#cb8-281" aria-hidden="true" tabindex="-1"></a>Interestingly, computer screens are raster devices, so any time</span>
+<span id="cb8-282"><a href="#cb8-282" aria-hidden="true" tabindex="-1"></a>we do view vector data on a computer screen, a rasterization has</span>
+<span id="cb8-283"><a href="#cb8-283" aria-hidden="true" tabindex="-1"></a>taken place.</span>
 <span id="cb8-284"><a href="#cb8-284" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-285"><a href="#cb8-285" aria-hidden="true" tabindex="-1"></a>Data cubes are _array data_ with one or more dimensions associated</span>
-<span id="cb8-286"><a href="#cb8-286" aria-hidden="true" tabindex="-1"></a>with space or geometry. The degenerate example is a one-dimensional</span>
-<span id="cb8-287"><a href="#cb8-287" aria-hidden="true" tabindex="-1"></a>array (or collection thereof), which we have in a table or</span>
-<span id="cb8-288"><a href="#cb8-288" aria-hidden="true" tabindex="-1"></a>data.frame.  The canonical example of array data is raster data,</span>
-<span id="cb8-289"><a href="#cb8-289" aria-hidden="true" tabindex="-1"></a>or a time series thereof. </span>
-<span id="cb8-290"><a href="#cb8-290" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-291"><a href="#cb8-291" aria-hidden="true" tabindex="-1"></a>Further examples include:</span>
+<span id="cb8-285"><a href="#cb8-285" aria-hidden="true" tabindex="-1"></a><span class="fu">### data cubes</span></span>
+<span id="cb8-286"><a href="#cb8-286" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-287"><a href="#cb8-287" aria-hidden="true" tabindex="-1"></a>Data cubes are _array data_ with one or more dimensions associated</span>
+<span id="cb8-288"><a href="#cb8-288" aria-hidden="true" tabindex="-1"></a>with space or geometry. The degenerate example is a one-dimensional</span>
+<span id="cb8-289"><a href="#cb8-289" aria-hidden="true" tabindex="-1"></a>array (or collection thereof), which we have in a table or</span>
+<span id="cb8-290"><a href="#cb8-290" aria-hidden="true" tabindex="-1"></a>data.frame.  The canonical example of array data is raster data,</span>
+<span id="cb8-291"><a href="#cb8-291" aria-hidden="true" tabindex="-1"></a>or a time series thereof. </span>
 <span id="cb8-292"><a href="#cb8-292" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-293"><a href="#cb8-293" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>3D rasters, including depth/height (atmospheric, geological)</span>
-<span id="cb8-294"><a href="#cb8-294" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>time series for points (one dimension with feature geometries)</span>
-<span id="cb8-295"><a href="#cb8-295" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>time series for areas (one dimension with feature geometries)</span>
-<span id="cb8-296"><a href="#cb8-296" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Origin-destination (OD) matrices (two dimensions with feature geometries)</span>
-<span id="cb8-297"><a href="#cb8-297" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>OD matrices as a function of time</span>
-<span id="cb8-298"><a href="#cb8-298" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-299"><a href="#cb8-299" aria-hidden="true" tabindex="-1"></a><span class="fu">## The spatial statistics data types</span></span>
+<span id="cb8-293"><a href="#cb8-293" aria-hidden="true" tabindex="-1"></a>Further examples include:</span>
+<span id="cb8-294"><a href="#cb8-294" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-295"><a href="#cb8-295" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>3D rasters, including depth/height (atmospheric, geological)</span>
+<span id="cb8-296"><a href="#cb8-296" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>time series for points (one dimension with feature geometries)</span>
+<span id="cb8-297"><a href="#cb8-297" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>time series for areas (one dimension with feature geometries)</span>
+<span id="cb8-298"><a href="#cb8-298" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Origin-destination (OD) matrices (two dimensions with feature geometries)</span>
+<span id="cb8-299"><a href="#cb8-299" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>OD matrices as a function of time</span>
 <span id="cb8-300"><a href="#cb8-300" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-301"><a href="#cb8-301" aria-hidden="true" tabindex="-1"></a><span class="fu">### Point Patterns</span></span>
+<span id="cb8-301"><a href="#cb8-301" aria-hidden="true" tabindex="-1"></a><span class="fu">## The spatial statistics data types</span></span>
 <span id="cb8-302"><a href="#cb8-302" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-303"><a href="#cb8-303" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Points (locations) + observation window</span>
-<span id="cb8-304"><a href="#cb8-304" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Example from <span class="co">[</span><span class="ot">here</span><span class="co">](https://opendata-esri-de.opendata.arcgis.com/datasets/dc6d012f47d94fde99deacc316721f30/explore?location=51.099061%2C10.453852%2C7.45)</span></span>
-<span id="cb8-305"><a href="#cb8-305" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-306"><a href="#cb8-306" aria-hidden="true" tabindex="-1"></a><span class="in">```{r fig-gdal-fig-nodetails, echo = FALSE}</span></span>
-<span id="cb8-307"><a href="#cb8-307" aria-hidden="true" tabindex="-1"></a><span class="in">#| code-fold: true</span></span>
-<span id="cb8-308"><a href="#cb8-308" aria-hidden="true" tabindex="-1"></a><span class="in">#| out.width: '100%'</span></span>
-<span id="cb8-309"><a href="#cb8-309" aria-hidden="true" tabindex="-1"></a><span class="in">#| fig.cap: "Wind turbine parks in Germany"</span></span>
-<span id="cb8-310"><a href="#cb8-310" aria-hidden="true" tabindex="-1"></a><span class="in">knitr::include_graphics("turbines.png")</span></span>
-<span id="cb8-311"><a href="#cb8-311" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb8-312"><a href="#cb8-312" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-313"><a href="#cb8-313" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>The locations contain the information</span>
-<span id="cb8-314"><a href="#cb8-314" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Points may have (discrete or continuous) *marks* (attributes)</span>
-<span id="cb8-315"><a href="#cb8-315" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>The _observation window_ tells where there are no points (empty space)</span>
-<span id="cb8-316"><a href="#cb8-316" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-317"><a href="#cb8-317" aria-hidden="true" tabindex="-1"></a><span class="fu">### Geostatistical data: locations + measured values</span></span>
+<span id="cb8-303"><a href="#cb8-303" aria-hidden="true" tabindex="-1"></a><span class="fu">### Point Patterns</span></span>
+<span id="cb8-304"><a href="#cb8-304" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-305"><a href="#cb8-305" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Points (locations) + observation window</span>
+<span id="cb8-306"><a href="#cb8-306" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Example from <span class="co">[</span><span class="ot">here</span><span class="co">](https://opendata-esri-de.opendata.arcgis.com/datasets/dc6d012f47d94fde99deacc316721f30/explore?location=51.099061%2C10.453852%2C7.45)</span></span>
+<span id="cb8-307"><a href="#cb8-307" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-308"><a href="#cb8-308" aria-hidden="true" tabindex="-1"></a><span class="in">```{r fig-gdal-fig-nodetails, echo = FALSE}</span></span>
+<span id="cb8-309"><a href="#cb8-309" aria-hidden="true" tabindex="-1"></a><span class="in">#| code-fold: true</span></span>
+<span id="cb8-310"><a href="#cb8-310" aria-hidden="true" tabindex="-1"></a><span class="in">#| out.width: '100%'</span></span>
+<span id="cb8-311"><a href="#cb8-311" aria-hidden="true" tabindex="-1"></a><span class="in">#| fig.cap: "Wind turbine parks in Germany"</span></span>
+<span id="cb8-312"><a href="#cb8-312" aria-hidden="true" tabindex="-1"></a><span class="in">knitr::include_graphics("turbines.png")</span></span>
+<span id="cb8-313"><a href="#cb8-313" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-314"><a href="#cb8-314" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-315"><a href="#cb8-315" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>The locations contain the information</span>
+<span id="cb8-316"><a href="#cb8-316" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Points may have (discrete or continuous) *marks* (attributes)</span>
+<span id="cb8-317"><a href="#cb8-317" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>The _observation window_ tells where there are no points (empty space)</span>
 <span id="cb8-318"><a href="#cb8-318" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-321"><a href="#cb8-321" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb8-322"><a href="#cb8-322" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
-<span id="cb8-323"><a href="#cb8-323" aria-hidden="true" tabindex="-1"></a><span class="co">#| out.width: '100%'</span></span>
-<span id="cb8-324"><a href="#cb8-324" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig.cap: "NO2 measurements at rural background stations (EEA)"</span></span>
-<span id="cb8-325"><a href="#cb8-325" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
-<span id="cb8-326"><a href="#cb8-326" aria-hidden="true" tabindex="-1"></a>no2 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">system.file</span>(<span class="st">"external/no2.csv"</span>,</span>
-<span id="cb8-327"><a href="#cb8-327" aria-hidden="true" tabindex="-1"></a>    <span class="at">package =</span> <span class="st">"gstat"</span>))</span>
-<span id="cb8-328"><a href="#cb8-328" aria-hidden="true" tabindex="-1"></a>crs <span class="ot">&lt;-</span> <span class="fu">st_crs</span>(<span class="st">"EPSG:32632"</span>)</span>
-<span id="cb8-329"><a href="#cb8-329" aria-hidden="true" tabindex="-1"></a><span class="fu">st_as_sf</span>(no2, <span class="at">crs =</span> <span class="st">"OGC:CRS84"</span>, <span class="at">coords =</span></span>
-<span id="cb8-330"><a href="#cb8-330" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(<span class="st">"station_longitude_deg"</span>, <span class="st">"station_latitude_deg"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb8-331"><a href="#cb8-331" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_transform</span>(crs) <span class="ot">-&gt;</span> no2.sf</span>
-<span id="cb8-332"><a href="#cb8-332" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb8-333"><a href="#cb8-333" aria-hidden="true" tabindex="-1"></a><span class="co"># plot(st_geometry(no2.sf))</span></span>
-<span id="cb8-334"><a href="#cb8-334" aria-hidden="true" tabindex="-1"></a><span class="fu">read_sf</span>(<span class="st">"de_nuts1.gpkg"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb8-335"><a href="#cb8-335" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(crs) <span class="ot">-&gt;</span> de</span>
-<span id="cb8-336"><a href="#cb8-336" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> <span class="fu">geom_sf</span>(<span class="at">data =</span> de) <span class="sc">+</span></span>
-<span id="cb8-337"><a href="#cb8-337" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_sf</span>(<span class="at">data =</span> no2.sf, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">col =</span> NO2))</span>
-<span id="cb8-338"><a href="#cb8-338" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb8-339"><a href="#cb8-339" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-340"><a href="#cb8-340" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>The value of interest is measured at a set of sample locations</span>
-<span id="cb8-341"><a href="#cb8-341" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>At other location, this value exists but is *missing*</span>
-<span id="cb8-342"><a href="#cb8-342" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>The interest is in estimating (predicting) this missing value (interpolation)</span>
-<span id="cb8-343"><a href="#cb8-343" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>The actual sample locations are not of (primary) interest, the signal is in the measured values</span>
-<span id="cb8-344"><a href="#cb8-344" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-345"><a href="#cb8-345" aria-hidden="true" tabindex="-1"></a><span class="fu">### Areal data</span></span>
+<span id="cb8-319"><a href="#cb8-319" aria-hidden="true" tabindex="-1"></a><span class="fu">### Geostatistical data: locations + measured values</span></span>
+<span id="cb8-320"><a href="#cb8-320" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-323"><a href="#cb8-323" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb8-324"><a href="#cb8-324" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
+<span id="cb8-325"><a href="#cb8-325" aria-hidden="true" tabindex="-1"></a><span class="co">#| out.width: '100%'</span></span>
+<span id="cb8-326"><a href="#cb8-326" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig.cap: "NO2 measurements at rural background stations (EEA)"</span></span>
+<span id="cb8-327"><a href="#cb8-327" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb8-328"><a href="#cb8-328" aria-hidden="true" tabindex="-1"></a>no2 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">system.file</span>(<span class="st">"external/no2.csv"</span>,</span>
+<span id="cb8-329"><a href="#cb8-329" aria-hidden="true" tabindex="-1"></a>    <span class="at">package =</span> <span class="st">"gstat"</span>))</span>
+<span id="cb8-330"><a href="#cb8-330" aria-hidden="true" tabindex="-1"></a>crs <span class="ot">&lt;-</span> <span class="fu">st_crs</span>(<span class="st">"EPSG:32632"</span>)</span>
+<span id="cb8-331"><a href="#cb8-331" aria-hidden="true" tabindex="-1"></a><span class="fu">st_as_sf</span>(no2, <span class="at">crs =</span> <span class="st">"OGC:CRS84"</span>, <span class="at">coords =</span></span>
+<span id="cb8-332"><a href="#cb8-332" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(<span class="st">"station_longitude_deg"</span>, <span class="st">"station_latitude_deg"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb8-333"><a href="#cb8-333" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_transform</span>(crs) <span class="ot">-&gt;</span> no2.sf</span>
+<span id="cb8-334"><a href="#cb8-334" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb8-335"><a href="#cb8-335" aria-hidden="true" tabindex="-1"></a><span class="co"># plot(st_geometry(no2.sf))</span></span>
+<span id="cb8-336"><a href="#cb8-336" aria-hidden="true" tabindex="-1"></a><span class="fu">read_sf</span>(<span class="st">"de_nuts1.gpkg"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-337"><a href="#cb8-337" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(crs) <span class="ot">-&gt;</span> de</span>
+<span id="cb8-338"><a href="#cb8-338" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> <span class="fu">geom_sf</span>(<span class="at">data =</span> de) <span class="sc">+</span></span>
+<span id="cb8-339"><a href="#cb8-339" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_sf</span>(<span class="at">data =</span> no2.sf, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">col =</span> NO2))</span>
+<span id="cb8-340"><a href="#cb8-340" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-341"><a href="#cb8-341" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-342"><a href="#cb8-342" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>The value of interest is measured at a set of sample locations</span>
+<span id="cb8-343"><a href="#cb8-343" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>At other location, this value exists but is *missing*</span>
+<span id="cb8-344"><a href="#cb8-344" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>The interest is in estimating (predicting) this missing value (interpolation)</span>
+<span id="cb8-345"><a href="#cb8-345" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>The actual sample locations are not of (primary) interest, the signal is in the measured values</span>
 <span id="cb8-346"><a href="#cb8-346" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-347"><a href="#cb8-347" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>polygons (or grid cells) + polygon summary values</span>
+<span id="cb8-347"><a href="#cb8-347" aria-hidden="true" tabindex="-1"></a><span class="fu">### Areal data</span></span>
 <span id="cb8-348"><a href="#cb8-348" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-351"><a href="#cb8-351" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb8-352"><a href="#cb8-352" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
-<span id="cb8-353"><a href="#cb8-353" aria-hidden="true" tabindex="-1"></a><span class="co">#| out.width: '100%'</span></span>
-<span id="cb8-354"><a href="#cb8-354" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig.cap: "NO2 rural background, average values per NUTS1 region"</span></span>
-<span id="cb8-355"><a href="#cb8-355" aria-hidden="true" tabindex="-1"></a><span class="co"># https://en.wikipedia.org/wiki/List_of_NUTS_regions_in_the_European_Union_by_GDP</span></span>
-<span id="cb8-356"><a href="#cb8-356" aria-hidden="true" tabindex="-1"></a>de<span class="sc">$</span>GDP_percap <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">45200</span>, <span class="dv">46100</span>, <span class="dv">37900</span>, <span class="dv">27800</span>, <span class="dv">49700</span>, <span class="dv">64700</span>, <span class="dv">45000</span>, <span class="dv">26700</span>, <span class="dv">36500</span>, <span class="dv">38700</span>, <span class="dv">35700</span>, <span class="dv">35300</span>, <span class="dv">29900</span>, <span class="dv">27400</span>, <span class="dv">32400</span>, <span class="dv">28900</span>)</span>
-<span id="cb8-357"><a href="#cb8-357" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> <span class="fu">geom_sf</span>(<span class="at">data =</span> de) <span class="sc">+</span></span>
-<span id="cb8-358"><a href="#cb8-358" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_sf</span>(<span class="at">data =</span> de, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">fill =</span> GDP_percap)) <span class="sc">+</span> </span>
-<span id="cb8-359"><a href="#cb8-359" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_sf</span>(<span class="at">data =</span> <span class="fu">st_cast</span>(de, <span class="st">"MULTILINESTRING"</span>), <span class="at">col =</span> <span class="st">'white'</span>)</span>
-<span id="cb8-360"><a href="#cb8-360" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb8-361"><a href="#cb8-361" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-362"><a href="#cb8-362" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>The polygons contain polygon summary (polygon support) values, not values that are constant throughout the polygon (as in a soil, lithology or land cover map)</span>
-<span id="cb8-363"><a href="#cb8-363" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Neighbouring polygons are typically related: spatial correlation</span>
-<span id="cb8-364"><a href="#cb8-364" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>neighbour-neighbour correlation: Moran's I</span>
-<span id="cb8-365"><a href="#cb8-365" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>regression models with correlated errors, spatial lag models, CAR models, GMRFs, ...</span>
-<span id="cb8-366"><a href="#cb8-366" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>see Ch 14-17 of <span class="co">[</span><span class="ot">SDSWR</span><span class="co">](https://r-spatial.org/book/)</span></span>
-<span id="cb8-367"><a href="#cb8-367" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>briefly addressed on Friday</span>
-<span id="cb8-368"><a href="#cb8-368" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-369"><a href="#cb8-369" aria-hidden="true" tabindex="-1"></a><span class="fu">## Data types that received less attention in the spatial statistics literature</span></span>
+<span id="cb8-349"><a href="#cb8-349" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>polygons (or grid cells) + polygon summary values</span>
+<span id="cb8-350"><a href="#cb8-350" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-353"><a href="#cb8-353" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb8-354"><a href="#cb8-354" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
+<span id="cb8-355"><a href="#cb8-355" aria-hidden="true" tabindex="-1"></a><span class="co">#| out.width: '100%'</span></span>
+<span id="cb8-356"><a href="#cb8-356" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig.cap: "NO2 rural background, average values per NUTS1 region"</span></span>
+<span id="cb8-357"><a href="#cb8-357" aria-hidden="true" tabindex="-1"></a><span class="co"># https://en.wikipedia.org/wiki/List_of_NUTS_regions_in_the_European_Union_by_GDP</span></span>
+<span id="cb8-358"><a href="#cb8-358" aria-hidden="true" tabindex="-1"></a>de<span class="sc">$</span>GDP_percap <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">45200</span>, <span class="dv">46100</span>, <span class="dv">37900</span>, <span class="dv">27800</span>, <span class="dv">49700</span>, <span class="dv">64700</span>, <span class="dv">45000</span>, <span class="dv">26700</span>, <span class="dv">36500</span>, <span class="dv">38700</span>, <span class="dv">35700</span>, <span class="dv">35300</span>, <span class="dv">29900</span>, <span class="dv">27400</span>, <span class="dv">32400</span>, <span class="dv">28900</span>)</span>
+<span id="cb8-359"><a href="#cb8-359" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> <span class="fu">geom_sf</span>(<span class="at">data =</span> de) <span class="sc">+</span></span>
+<span id="cb8-360"><a href="#cb8-360" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_sf</span>(<span class="at">data =</span> de, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">fill =</span> GDP_percap)) <span class="sc">+</span> </span>
+<span id="cb8-361"><a href="#cb8-361" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_sf</span>(<span class="at">data =</span> <span class="fu">st_cast</span>(de, <span class="st">"MULTILINESTRING"</span>), <span class="at">col =</span> <span class="st">'white'</span>)</span>
+<span id="cb8-362"><a href="#cb8-362" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-363"><a href="#cb8-363" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-364"><a href="#cb8-364" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>The polygons contain polygon summary (polygon support) values, not values that are constant throughout the polygon (as in a soil, lithology or land cover map)</span>
+<span id="cb8-365"><a href="#cb8-365" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Neighbouring polygons are typically related: spatial correlation</span>
+<span id="cb8-366"><a href="#cb8-366" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>neighbour-neighbour correlation: Moran's I</span>
+<span id="cb8-367"><a href="#cb8-367" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>regression models with correlated errors, spatial lag models, CAR models, GMRFs, ...</span>
+<span id="cb8-368"><a href="#cb8-368" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>see Ch 14-17 of <span class="co">[</span><span class="ot">SDSWR</span><span class="co">](https://r-spatial.org/book/)</span></span>
+<span id="cb8-369"><a href="#cb8-369" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>briefly addressed on Friday</span>
 <span id="cb8-370"><a href="#cb8-370" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-371"><a href="#cb8-371" aria-hidden="true" tabindex="-1"></a><span class="fu">### Image data</span></span>
+<span id="cb8-371"><a href="#cb8-371" aria-hidden="true" tabindex="-1"></a><span class="fu">## Data types that received less attention in the spatial statistics literature</span></span>
 <span id="cb8-372"><a href="#cb8-372" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-375"><a href="#cb8-375" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb8-376"><a href="#cb8-376" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
-<span id="cb8-377"><a href="#cb8-377" aria-hidden="true" tabindex="-1"></a><span class="co">#| out.width: '100%'</span></span>
-<span id="cb8-378"><a href="#cb8-378" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig.cap: "RGB image from a Landsat scene"</span></span>
-<span id="cb8-379"><a href="#cb8-379" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stars)</span>
-<span id="cb8-380"><a href="#cb8-380" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(L7_ETMs, <span class="at">rgb =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>)</span>
-<span id="cb8-381"><a href="#cb8-381" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb8-382"><a href="#cb8-382" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-383"><a href="#cb8-383" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>are these geostatistical data, or areal data?</span>
-<span id="cb8-384"><a href="#cb8-384" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>If we identify objects from images, can we see them as point patterns?</span>
-<span id="cb8-385"><a href="#cb8-385" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-386"><a href="#cb8-386" aria-hidden="true" tabindex="-1"></a><span class="fu">### Tracking data, trajectories</span></span>
+<span id="cb8-373"><a href="#cb8-373" aria-hidden="true" tabindex="-1"></a><span class="fu">### Image data</span></span>
+<span id="cb8-374"><a href="#cb8-374" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-377"><a href="#cb8-377" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb8-378"><a href="#cb8-378" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
+<span id="cb8-379"><a href="#cb8-379" aria-hidden="true" tabindex="-1"></a><span class="co">#| out.width: '100%'</span></span>
+<span id="cb8-380"><a href="#cb8-380" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig.cap: "RGB image from a Landsat scene"</span></span>
+<span id="cb8-381"><a href="#cb8-381" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stars)</span>
+<span id="cb8-382"><a href="#cb8-382" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(L7_ETMs, <span class="at">rgb =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>)</span>
+<span id="cb8-383"><a href="#cb8-383" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-384"><a href="#cb8-384" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-385"><a href="#cb8-385" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>are these geostatistical data, or areal data?</span>
+<span id="cb8-386"><a href="#cb8-386" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>If we identify objects from images, can we see them as point patterns?</span>
 <span id="cb8-387"><a href="#cb8-387" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-390"><a href="#cb8-390" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb8-391"><a href="#cb8-391" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
-<span id="cb8-392"><a href="#cb8-392" aria-hidden="true" tabindex="-1"></a><span class="co">#| out.width: '100%'</span></span>
-<span id="cb8-393"><a href="#cb8-393" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig.cap: "Storm/hurricane trajectories colored by year"</span></span>
-<span id="cb8-394"><a href="#cb8-394" aria-hidden="true" tabindex="-1"></a><span class="co"># from: https://r-spatial.org/r/2017/08/28/nest.html</span></span>
-<span id="cb8-395"><a href="#cb8-395" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb8-396"><a href="#cb8-396" aria-hidden="true" tabindex="-1"></a>storms.sf <span class="ot">&lt;-</span> storms <span class="sc">%&gt;%</span></span>
-<span id="cb8-397"><a href="#cb8-397" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_as_sf</span>(<span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"long"</span>, <span class="st">"lat"</span>), <span class="at">crs =</span> <span class="dv">4326</span>)</span>
-<span id="cb8-398"><a href="#cb8-398" aria-hidden="true" tabindex="-1"></a>storms.sf <span class="ot">&lt;-</span> storms.sf <span class="sc">%&gt;%</span> </span>
-<span id="cb8-399"><a href="#cb8-399" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">time =</span> <span class="fu">as.POSIXct</span>(<span class="fu">paste</span>(<span class="fu">paste</span>(year,month,day, <span class="at">sep =</span> <span class="st">"-"</span>), </span>
-<span id="cb8-400"><a href="#cb8-400" aria-hidden="true" tabindex="-1"></a>                                   <span class="fu">paste</span>(hour, <span class="st">":00"</span>, <span class="at">sep =</span> <span class="st">""</span>)))) <span class="sc">%&gt;%</span> </span>
-<span id="cb8-401"><a href="#cb8-401" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span>month, <span class="sc">-</span>day, <span class="sc">-</span>hour)</span>
-<span id="cb8-402"><a href="#cb8-402" aria-hidden="true" tabindex="-1"></a>storms.nest <span class="ot">&lt;-</span> storms.sf <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(name, year) <span class="sc">%&gt;%</span> nest</span>
-<span id="cb8-403"><a href="#cb8-403" aria-hidden="true" tabindex="-1"></a>to_line <span class="ot">&lt;-</span> <span class="cf">function</span>(tr) <span class="fu">st_cast</span>(<span class="fu">st_combine</span>(tr), <span class="st">"LINESTRING"</span>) <span class="sc">%&gt;%</span> .[[<span class="dv">1</span>]] </span>
-<span id="cb8-404"><a href="#cb8-404" aria-hidden="true" tabindex="-1"></a>tracks <span class="ot">&lt;-</span> storms.nest <span class="sc">%&gt;%</span> <span class="fu">pull</span>(data) <span class="sc">%&gt;%</span> <span class="fu">map</span>(to_line) <span class="sc">%&gt;%</span> <span class="fu">st_sfc</span>(<span class="at">crs =</span> <span class="dv">4326</span>)</span>
-<span id="cb8-405"><a href="#cb8-405" aria-hidden="true" tabindex="-1"></a>storms.tr <span class="ot">&lt;-</span> storms.nest <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>data) <span class="sc">%&gt;%</span> <span class="fu">st_sf</span>(<span class="at">geometry =</span> tracks)</span>
-<span id="cb8-406"><a href="#cb8-406" aria-hidden="true" tabindex="-1"></a>storms.tr <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">color =</span> year)) <span class="sc">+</span> <span class="fu">geom_sf</span>()</span>
-<span id="cb8-407"><a href="#cb8-407" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb8-408"><a href="#cb8-408" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-409"><a href="#cb8-409" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>A temporal snapshot (time slice) of a set of moving things forms a point pattern</span>
-<span id="cb8-410"><a href="#cb8-410" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>We often analyse trajectories by</span>
-<span id="cb8-411"><a href="#cb8-411" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>estimating densities, for space-time blocks, per individual or together</span>
-<span id="cb8-412"><a href="#cb8-412" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>analysing interactions (alibi problem, mating animals, home range, UDF etc)</span>
-<span id="cb8-413"><a href="#cb8-413" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-414"><a href="#cb8-414" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-415"><a href="#cb8-415" aria-hidden="true" tabindex="-1"></a><span class="fu">### Design-based statistics</span></span>
+<span id="cb8-388"><a href="#cb8-388" aria-hidden="true" tabindex="-1"></a><span class="fu">### Tracking data, trajectories</span></span>
+<span id="cb8-389"><a href="#cb8-389" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-392"><a href="#cb8-392" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb8-393"><a href="#cb8-393" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
+<span id="cb8-394"><a href="#cb8-394" aria-hidden="true" tabindex="-1"></a><span class="co">#| out.width: '100%'</span></span>
+<span id="cb8-395"><a href="#cb8-395" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig.cap: "Storm/hurricane trajectories colored by year"</span></span>
+<span id="cb8-396"><a href="#cb8-396" aria-hidden="true" tabindex="-1"></a><span class="co"># from: https://r-spatial.org/r/2017/08/28/nest.html</span></span>
+<span id="cb8-397"><a href="#cb8-397" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb8-398"><a href="#cb8-398" aria-hidden="true" tabindex="-1"></a>storms.sf <span class="ot">&lt;-</span> storms <span class="sc">%&gt;%</span></span>
+<span id="cb8-399"><a href="#cb8-399" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_as_sf</span>(<span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"long"</span>, <span class="st">"lat"</span>), <span class="at">crs =</span> <span class="dv">4326</span>)</span>
+<span id="cb8-400"><a href="#cb8-400" aria-hidden="true" tabindex="-1"></a>storms.sf <span class="ot">&lt;-</span> storms.sf <span class="sc">%&gt;%</span> </span>
+<span id="cb8-401"><a href="#cb8-401" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">time =</span> <span class="fu">as.POSIXct</span>(<span class="fu">paste</span>(<span class="fu">paste</span>(year,month,day, <span class="at">sep =</span> <span class="st">"-"</span>), </span>
+<span id="cb8-402"><a href="#cb8-402" aria-hidden="true" tabindex="-1"></a>                                   <span class="fu">paste</span>(hour, <span class="st">":00"</span>, <span class="at">sep =</span> <span class="st">""</span>)))) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-403"><a href="#cb8-403" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span>month, <span class="sc">-</span>day, <span class="sc">-</span>hour)</span>
+<span id="cb8-404"><a href="#cb8-404" aria-hidden="true" tabindex="-1"></a>storms.nest <span class="ot">&lt;-</span> storms.sf <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(name, year) <span class="sc">%&gt;%</span> nest</span>
+<span id="cb8-405"><a href="#cb8-405" aria-hidden="true" tabindex="-1"></a>to_line <span class="ot">&lt;-</span> <span class="cf">function</span>(tr) <span class="fu">st_cast</span>(<span class="fu">st_combine</span>(tr), <span class="st">"LINESTRING"</span>) <span class="sc">%&gt;%</span> .[[<span class="dv">1</span>]] </span>
+<span id="cb8-406"><a href="#cb8-406" aria-hidden="true" tabindex="-1"></a>tracks <span class="ot">&lt;-</span> storms.nest <span class="sc">%&gt;%</span> <span class="fu">pull</span>(data) <span class="sc">%&gt;%</span> <span class="fu">map</span>(to_line) <span class="sc">%&gt;%</span> <span class="fu">st_sfc</span>(<span class="at">crs =</span> <span class="dv">4326</span>)</span>
+<span id="cb8-407"><a href="#cb8-407" aria-hidden="true" tabindex="-1"></a>storms.tr <span class="ot">&lt;-</span> storms.nest <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>data) <span class="sc">%&gt;%</span> <span class="fu">st_sf</span>(<span class="at">geometry =</span> tracks)</span>
+<span id="cb8-408"><a href="#cb8-408" aria-hidden="true" tabindex="-1"></a>storms.tr <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">color =</span> year)) <span class="sc">+</span> <span class="fu">geom_sf</span>()</span>
+<span id="cb8-409"><a href="#cb8-409" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-410"><a href="#cb8-410" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-411"><a href="#cb8-411" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>A temporal snapshot (time slice) of a set of moving things forms a point pattern</span>
+<span id="cb8-412"><a href="#cb8-412" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>We often analyse trajectories by</span>
+<span id="cb8-413"><a href="#cb8-413" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>estimating densities, for space-time blocks, per individual or together</span>
+<span id="cb8-414"><a href="#cb8-414" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>analysing interactions (alibi problem, mating animals, home range, UDF etc)</span>
+<span id="cb8-415"><a href="#cb8-415" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-416"><a href="#cb8-416" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-417"><a href="#cb8-417" aria-hidden="true" tabindex="-1"></a>In design-based statistics, randomness comes from random sampling. Consider an area $B$, from which we take samples $$z(s),</span>
-<span id="cb8-418"><a href="#cb8-418" aria-hidden="true" tabindex="-1"></a>s \in B,$$ with $s$ a location for instance two-dimensional: $s_i =</span>
-<span id="cb8-419"><a href="#cb8-419" aria-hidden="true" tabindex="-1"></a><span class="sc">\{</span>x_i,y_i<span class="sc">\}</span>$. If we select the samples *randomly*, we can consider $S \in B$ a random variable, and $z(S)$ a random sample. Note the randomness in $S$, not in $z$.</span>
-<span id="cb8-420"><a href="#cb8-420" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-421"><a href="#cb8-421" aria-hidden="true" tabindex="-1"></a>Two variables $z(S_1)$ and $z(S_2)$ are *independent* if $S_1$ and $S_2$ are sampled independently. For estimation we need to know the inclusion probabilities, which need to be non-negative for every location.</span>
+<span id="cb8-417"><a href="#cb8-417" aria-hidden="true" tabindex="-1"></a><span class="fu">### Design-based statistics</span></span>
+<span id="cb8-418"><a href="#cb8-418" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-419"><a href="#cb8-419" aria-hidden="true" tabindex="-1"></a>In design-based statistics, randomness comes from random sampling. Consider an area $B$, from which we take samples $$z(s),</span>
+<span id="cb8-420"><a href="#cb8-420" aria-hidden="true" tabindex="-1"></a>s \in B,$$ with $s$ a location for instance two-dimensional: $s_i =</span>
+<span id="cb8-421"><a href="#cb8-421" aria-hidden="true" tabindex="-1"></a><span class="sc">\{</span>x_i,y_i<span class="sc">\}</span>$. If we select the samples *randomly*, we can consider $S \in B$ a random variable, and $z(S)$ a random sample. Note the randomness in $S$, not in $z$.</span>
 <span id="cb8-422"><a href="#cb8-422" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-423"><a href="#cb8-423" aria-hidden="true" tabindex="-1"></a>If inclusion probabilities are constant (simple random sampling; or complete spatial randomness: day 2, point patterns) then we can estimate the mean of $Z(B)$ by the sample mean $$\frac{1}{n}\sum_{j=1}^n</span>
-<span id="cb8-424"><a href="#cb8-424" aria-hidden="true" tabindex="-1"></a>z(s_j).$$ This also predicts the value of a *randomly* chosen observation $z(S)$. It cannot be used to predict the value $z(s_0)$ for a non-randomly chosen location $s_0$; for this we need a model.</span>
-<span id="cb8-425"><a href="#cb8-425" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-426"><a href="#cb8-426" aria-hidden="true" tabindex="-1"></a><span class="fu">### Model-based statistics</span></span>
+<span id="cb8-423"><a href="#cb8-423" aria-hidden="true" tabindex="-1"></a>Two variables $z(S_1)$ and $z(S_2)$ are *independent* if $S_1$ and $S_2$ are sampled independently. For estimation we need to know the inclusion probabilities, which need to be non-negative for every location.</span>
+<span id="cb8-424"><a href="#cb8-424" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-425"><a href="#cb8-425" aria-hidden="true" tabindex="-1"></a>If inclusion probabilities are constant (simple random sampling; or complete spatial randomness: day 2, point patterns) then we can estimate the mean of $Z(B)$ by the sample mean $$\frac{1}{n}\sum_{j=1}^n</span>
+<span id="cb8-426"><a href="#cb8-426" aria-hidden="true" tabindex="-1"></a>z(s_j).$$ This also predicts the value of a *randomly* chosen observation $z(S)$. It cannot be used to predict the value $z(s_0)$ for a non-randomly chosen location $s_0$; for this we need a model.</span>
 <span id="cb8-427"><a href="#cb8-427" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-428"><a href="#cb8-428" aria-hidden="true" tabindex="-1"></a>Model-based statistics assumes randomness in the measured responses; consider a regression model $y = X\beta + e$, where $e$ is a random variable and as a consequence $y$, the response variable is a random variable. In the spatial context we replace $y$ with $z$, and capitalize it to indicate it is a random variable, and write $$Z(s) = X(s)\beta + e(s)$$ to stress that</span>
+<span id="cb8-428"><a href="#cb8-428" aria-hidden="true" tabindex="-1"></a><span class="fu">### Model-based statistics</span></span>
 <span id="cb8-429"><a href="#cb8-429" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-430"><a href="#cb8-430" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>$Z(s)$ is a random function (random variables $Z$ as a function of $s$)</span>
-<span id="cb8-431"><a href="#cb8-431" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>$X(s)$ is the matrix with covariates, which depend on $s$</span>
-<span id="cb8-432"><a href="#cb8-432" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>$\beta$ are (spatially) constant coefficients, not depening on $s$</span>
-<span id="cb8-433"><a href="#cb8-433" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>$e(s)$ is a random function with mean zero and covariance matrix $\Sigma$</span>
-<span id="cb8-434"><a href="#cb8-434" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-435"><a href="#cb8-435" aria-hidden="true" tabindex="-1"></a>In the regression literature this is called a (linear) mixed model, because $e$ is not i.i.d. If $e(s)$ contains an iid component $\epsilon$ we can write this as</span>
+<span id="cb8-430"><a href="#cb8-430" aria-hidden="true" tabindex="-1"></a>Model-based statistics assumes randomness in the measured responses; consider a regression model $y = X\beta + e$, where $e$ is a random variable and as a consequence $y$, the response variable is a random variable. In the spatial context we replace $y$ with $z$, and capitalize it to indicate it is a random variable, and write $$Z(s) = X(s)\beta + e(s)$$ to stress that</span>
+<span id="cb8-431"><a href="#cb8-431" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-432"><a href="#cb8-432" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>$Z(s)$ is a random function (random variables $Z$ as a function of $s$)</span>
+<span id="cb8-433"><a href="#cb8-433" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>$X(s)$ is the matrix with covariates, which depend on $s$</span>
+<span id="cb8-434"><a href="#cb8-434" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>$\beta$ are (spatially) constant coefficients, not depening on $s$</span>
+<span id="cb8-435"><a href="#cb8-435" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>$e(s)$ is a random function with mean zero and covariance matrix $\Sigma$</span>
 <span id="cb8-436"><a href="#cb8-436" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-437"><a href="#cb8-437" aria-hidden="true" tabindex="-1"></a>$$Z(s) = X(s)\beta + w(s) + \epsilon$$</span>
+<span id="cb8-437"><a href="#cb8-437" aria-hidden="true" tabindex="-1"></a>In the regression literature this is called a (linear) mixed model, because $e$ is not i.i.d. If $e(s)$ contains an iid component $\epsilon$ we can write this as</span>
 <span id="cb8-438"><a href="#cb8-438" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-439"><a href="#cb8-439" aria-hidden="true" tabindex="-1"></a>with $w(s)$ the spatial signal, and $\epsilon$ a noise compenent e.g. due to measurement error.</span>
+<span id="cb8-439"><a href="#cb8-439" aria-hidden="true" tabindex="-1"></a>$$Z(s) = X(s)\beta + w(s) + \epsilon$$</span>
 <span id="cb8-440"><a href="#cb8-440" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-441"><a href="#cb8-441" aria-hidden="true" tabindex="-1"></a>Predicting $Z(s_0)$ will involve (GLS) estimation of $\beta$, but also prediction of $e(s_0)$ using correlated, nearby observations (day 3: geostatistics).</span>
+<span id="cb8-441"><a href="#cb8-441" aria-hidden="true" tabindex="-1"></a>with $w(s)$ the spatial signal, and $\epsilon$ a noise compenent e.g. due to measurement error.</span>
 <span id="cb8-442"><a href="#cb8-442" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-443"><a href="#cb8-443" aria-hidden="true" tabindex="-1"></a><span class="fu">### Design- or model-based?</span></span>
+<span id="cb8-443"><a href="#cb8-443" aria-hidden="true" tabindex="-1"></a>Predicting $Z(s_0)$ will involve (GLS) estimation of $\beta$, but also prediction of $e(s_0)$ using correlated, nearby observations (day 3: geostatistics).</span>
 <span id="cb8-444"><a href="#cb8-444" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-445"><a href="#cb8-445" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>design-based analysis requires a _random_ sample: observations come with _sampling weights_; if that is the case analysis can proceed assuming (design-based) independence (it does not imply that there is no spatial correlation, but spatial correlation only comes up in the model-based perspective)</span>
-<span id="cb8-446"><a href="#cb8-446" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>model-based requires stationarity assumptions to estimate $\Sigma$</span>
-<span id="cb8-447"><a href="#cb8-447" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>model-based is typically more effective for interpolation problems</span>
-<span id="cb8-448"><a href="#cb8-448" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>design-based can be most effective when estimating averages of sums, for all or for strata</span>
-<span id="cb8-449"><a href="#cb8-449" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-450"><a href="#cb8-450" aria-hidden="true" tabindex="-1"></a><span class="fu">## Checklist if you have spatial data</span></span>
+<span id="cb8-445"><a href="#cb8-445" aria-hidden="true" tabindex="-1"></a><span class="fu">### Design- or model-based?</span></span>
+<span id="cb8-446"><a href="#cb8-446" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-447"><a href="#cb8-447" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>design-based analysis requires a _random_ sample: observations come with _sampling weights_; if that is the case analysis can proceed assuming (design-based) independence (it does not imply that there is no spatial correlation, but spatial correlation only comes up in the model-based perspective)</span>
+<span id="cb8-448"><a href="#cb8-448" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>model-based requires stationarity assumptions to estimate $\Sigma$</span>
+<span id="cb8-449"><a href="#cb8-449" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>model-based is typically more effective for interpolation problems</span>
+<span id="cb8-450"><a href="#cb8-450" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>design-based can be most effective when estimating averages of sums, for all or for strata</span>
 <span id="cb8-451"><a href="#cb8-451" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-452"><a href="#cb8-452" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Do you have the spatial coordinates of your data?</span>
-<span id="cb8-453"><a href="#cb8-453" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Are the coordinates Earth-bound?</span>
-<span id="cb8-454"><a href="#cb8-454" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>If yes, do you have the coordinate reference system of them?</span>
-<span id="cb8-455"><a href="#cb8-455" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>What is the support (physical size) of your observations?</span>
-<span id="cb8-456"><a href="#cb8-456" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Were the data obtained by random sampling, and if yes, do you have sampling weights?</span>
-<span id="cb8-457"><a href="#cb8-457" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Do you know the *extent* from which your data were sampled, or collected?</span>
-<span id="cb8-458"><a href="#cb8-458" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-459"><a href="#cb8-459" aria-hidden="true" tabindex="-1"></a><span class="fu">## Exercises</span></span>
+<span id="cb8-452"><a href="#cb8-452" aria-hidden="true" tabindex="-1"></a><span class="fu">## Checklist if you have spatial data</span></span>
+<span id="cb8-453"><a href="#cb8-453" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-454"><a href="#cb8-454" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Do you have the spatial coordinates of your data?</span>
+<span id="cb8-455"><a href="#cb8-455" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Are the coordinates Earth-bound?</span>
+<span id="cb8-456"><a href="#cb8-456" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>If yes, do you have the coordinate reference system of them?</span>
+<span id="cb8-457"><a href="#cb8-457" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>What is the support (physical size) of your observations?</span>
+<span id="cb8-458"><a href="#cb8-458" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Were the data obtained by random sampling, and if yes, do you have sampling weights?</span>
+<span id="cb8-459"><a href="#cb8-459" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Do you know the *extent* from which your data were sampled, or collected?</span>
 <span id="cb8-460"><a href="#cb8-460" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-461"><a href="#cb8-461" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>What is the coordinate reference system of the <span class="in">`ne_countries()`</span> dataset, imported above?</span>
-<span id="cb8-462"><a href="#cb8-462" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Look up the "Equidistant Cylindrical (Plate Carrée)" projection on the <span class="ot">&lt;https://proj.org&gt;</span> website.</span>
-<span id="cb8-463"><a href="#cb8-463" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Why is this projection called *The simplest of all projections*?</span>
-<span id="cb8-464"><a href="#cb8-464" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Project <span class="in">`ne_countries`</span> to Plate Carrée, and plot it with <span class="in">`axes=TRUE`</span>. What has changed? (Hint: <span class="in">`st_crs()`</span> accepts a *proj string* to define a coordinate reference system (CRS); <span class="in">`st_transform()`</span> transforms a dataset to a new CRS.)</span>
-<span id="cb8-465"><a href="#cb8-465" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Project the same dataset to Eckert IV projection. What has changed?</span>
-<span id="cb8-466"><a href="#cb8-466" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Also try plotting this dataset after transforming it to an orthographic projection with <span class="in">`+proj=ortho`</span>; what went wrong?</span>
-<span id="cb8-467"><a href="#cb8-467" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-468"><a href="#cb8-468" aria-hidden="true" tabindex="-1"></a>Next: continue with the [exercises of Chapter</span>
-<span id="cb8-469"><a href="#cb8-469" aria-hidden="true" tabindex="-1"></a>3](https://r-spatial.org/book/03-Geometries.html#exercises) of</span>
-<span id="cb8-470"><a href="#cb8-470" aria-hidden="true" tabindex="-1"></a>"Spatial Data Science: with applications in R", then [those of</span>
-<span id="cb8-471"><a href="#cb8-471" aria-hidden="true" tabindex="-1"></a>Chapter 6](https://r-spatial.org/book/06-Cubes.html#exercises).</span>
-<span id="cb8-472"><a href="#cb8-472" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-473"><a href="#cb8-473" aria-hidden="true" tabindex="-1"></a><span class="fu">## Further reading</span></span>
+<span id="cb8-461"><a href="#cb8-461" aria-hidden="true" tabindex="-1"></a><span class="fu">## Exercises</span></span>
+<span id="cb8-462"><a href="#cb8-462" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-463"><a href="#cb8-463" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>What is the coordinate reference system of the <span class="in">`ne_countries()`</span> dataset, imported above?</span>
+<span id="cb8-464"><a href="#cb8-464" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Look up the "Equidistant Cylindrical (Plate Carrée)" projection on the <span class="ot">&lt;https://proj.org&gt;</span> website.</span>
+<span id="cb8-465"><a href="#cb8-465" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Why is this projection called *The simplest of all projections*?</span>
+<span id="cb8-466"><a href="#cb8-466" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Project <span class="in">`ne_countries`</span> to Plate Carrée, and plot it with <span class="in">`axes=TRUE`</span>. What has changed? (Hint: <span class="in">`st_crs()`</span> accepts a *proj string* to define a coordinate reference system (CRS); <span class="in">`st_transform()`</span> transforms a dataset to a new CRS.)</span>
+<span id="cb8-467"><a href="#cb8-467" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Project the same dataset to Eckert IV projection. What has changed?</span>
+<span id="cb8-468"><a href="#cb8-468" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Also try plotting this dataset after transforming it to an orthographic projection with <span class="in">`+proj=ortho`</span>; what went wrong?</span>
+<span id="cb8-469"><a href="#cb8-469" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-470"><a href="#cb8-470" aria-hidden="true" tabindex="-1"></a>Next: continue with the [exercises of Chapter</span>
+<span id="cb8-471"><a href="#cb8-471" aria-hidden="true" tabindex="-1"></a>3](https://r-spatial.org/book/03-Geometries.html#exercises) of</span>
+<span id="cb8-472"><a href="#cb8-472" aria-hidden="true" tabindex="-1"></a>"Spatial Data Science: with applications in R", then [those of</span>
+<span id="cb8-473"><a href="#cb8-473" aria-hidden="true" tabindex="-1"></a>Chapter 6](https://r-spatial.org/book/06-Cubes.html#exercises).</span>
 <span id="cb8-474"><a href="#cb8-474" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-475"><a href="#cb8-475" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Ripley, B. 1981. Spatial Statistics. Wiley.</span>
-<span id="cb8-476"><a href="#cb8-476" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Cressie, N. 1993. Statistics for Spatial Data. Wiley.</span>
-<span id="cb8-477"><a href="#cb8-477" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Cochran, W.G. 1977. Sampling Techniques. Wiley.</span>
+<span id="cb8-475"><a href="#cb8-475" aria-hidden="true" tabindex="-1"></a><span class="fu">## Further reading</span></span>
+<span id="cb8-476"><a href="#cb8-476" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-477"><a href="#cb8-477" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Ripley, B. 1981. Spatial Statistics. Wiley.</span>
+<span id="cb8-478"><a href="#cb8-478" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Cressie, N. 1993. Statistics for Spatial Data. Wiley.</span>
+<span id="cb8-479"><a href="#cb8-479" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Cochran, W.G. 1977. Sampling Techniques. Wiley.</span>
 </code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
