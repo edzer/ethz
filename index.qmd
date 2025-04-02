@@ -114,10 +114,10 @@ Reading as preparation: students may want to read from this book chapters: 3-7, 
 
 (skip)
 
-* Go to [https://github.com/edzer/madrid/](https://github.com/edzer/madrid/)
+* Go to [https://github.com/edzer/ethz/](https://github.com/edzer/ethz/)
 * Go to "Code", then "copy URL to clipboard"
 * Clone this repo to your hard drive
-* Start RStudio by double clickign the `madrid.Rproj` file in the source directory
+* Start RStudio by double clickign the `ethz.Rproj` file in the source directory
 * Reproduce these course materials by [installing quarto](https://quarto.org/docs/get-started/) and 
     * in RStudio: run `build` - `render book`, or
     * on the command line: run `quarto render` in the course directory 
