@@ -188,6 +188,23 @@ vv$gamma - v$gamma
 plot(vv)
 ```
 
+#### Is this spatial correlation significant?
+
+We could build an "envelope" around a "null model" of no spatial correlation by repeated reassigning the measured values to _random_ points:
+
+```{r}
+par(xaxs="i", yaxs = "i")
+vv = variogram(NO2~1, no2.sf, width = 50000, cutoff = 350000)
+plot(gamma~dist, vv, xlim = c(0,350000), ylim = c(0,25), pch = 16)
+for (i in 1:100) {
+   no2.sf$random = sample(no2.sf$NO2)
+   vv = variogram(random~1, no2.sf, width = 50000, cutoff = 350000)
+   lines(vv$dist, vv$gamma, col = 'grey')
+}
+```
+
+How sensible is a null hypothesis of zero spatial correlation?
+
 #### Fit a variogram model
 
 ```{r}
