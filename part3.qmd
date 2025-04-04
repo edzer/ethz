@@ -194,13 +194,13 @@ We could build an "envelope" around a "null model" of no spatial correlation by 
 
 ```{r}
 par(xaxs="i", yaxs = "i")
-vv = variogram(NO2~1, no2.sf, width = 50000, cutoff = 350000)
 plot(NA, NA, xlim = c(0,350000), ylim = c(0,25))
 for (i in 1:100) {
    no2.sf$random = sample(no2.sf$NO2)
    vv = variogram(random~1, no2.sf, width = 50000, cutoff = 350000)
    lines(vv$dist, vv$gamma, col = 'grey')
 }
+vv = variogram(NO2~1, no2.sf, width = 50000, cutoff = 350000)
 points(vv$dist, vv$gamma, pch = 16)
 ```
 
@@ -208,13 +208,13 @@ Note that the width of the "envelope" will depend on the width of the distance b
 
 ```{r}
 par(xaxs="i", yaxs = "i")
-vv = variogram(NO2~1, no2.sf, width = 20000, cutoff = 350000)
 plot(NA, NA, xlim = c(0,350000), ylim = c(0,25))
 for (i in 1:100) {
    no2.sf$random = sample(no2.sf$NO2)
    vv = variogram(random~1, no2.sf, width = 20000, cutoff = 350000)
    lines(vv$dist, vv$gamma, col = 'grey')
 }
+vv = variogram(NO2~1, no2.sf, width = 20000, cutoff = 350000)
 points(vv$dist, vv$gamma, pch = 16)
 ```
 
@@ -313,7 +313,7 @@ pol_pres15$I_turnout |>
 plot(pol_pres15["I_turnout"])
 ```
 
-A simple linear regression model, assuming independent observations, can be carried out using `lm`:
+A simple linear (OLS) regression model, assuming independent observations, can be carried out using `lm`:
 
 ```{r}
 summary(pol_pres15$I_entitled_to_vote)
@@ -321,6 +321,8 @@ summary(pol_pres15$I_entitled_to_vote)
 pol_pres15$res = residuals(lm0)
 plot(pol_pres15["res"])
 ```
+
+## Fitting regression models under spatial correlation
 
 A spatial linear regression model (SEM: spatial error model),
 assuming independent observations, can be carried out using `lm`:
@@ -333,10 +335,9 @@ SEM_pres <- errorsarlm(form, data = pol_pres15, Durbin = FALSE,
 SEM_pres |> summary()
 ```
 
-## Fitting regression models under spatial correlation
+## Exercises 
 
-
-### Exercises Point Patterns
+#### Point Patterns
 
 1. From the point pattern of wind turbines shown in section 1.4, download the data as GeoPackage, and read them into R
 1. Read the boundary of Germany using `rnaturalearth::ne_countries(scale = "large", country = "Germany")`
@@ -348,7 +349,7 @@ SEM_pres |> summary()
 1. Verify that the mean density multiplied by the area of the window approximates the number of turbines
 1. Test for interaction: create diagnostic plots to verify whether the point pattern is clustered, or exhibits repulsion
 
-## Exercises Geostat.
+#### Geostat.
 
 1. Compute the variogram cloud of NO2 using `variogram()` and  argument `cloud = TRUE`.  (a) How does the resulting object differ from the "regular" variogram (use the `head` command on both objects); (b) what do the "left" and "right" fields refer to? (c) when we plot the resulting variogram cloud object, does it still indicate spatial correlation?
 2. Compute the variogram of NO2 as above, and change the arguments `cutoff` and `width` into very large or small values. What do they do?
@@ -357,7 +358,7 @@ SEM_pres |> summary()
 5. Which model do you like the best? Can the SSErr attribute of the fitted model be used to compare the models? How else can variogram model fits be compared?
 
 
-## Exercises Lattice data
+#### Lattice data
 
 1. Compare the results of the simple linear regression with the spatial error model
 2. Compare the maps of residuals of both models
