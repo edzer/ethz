@@ -195,12 +195,27 @@ We could build an "envelope" around a "null model" of no spatial correlation by 
 ```{r}
 par(xaxs="i", yaxs = "i")
 vv = variogram(NO2~1, no2.sf, width = 50000, cutoff = 350000)
-plot(gamma~dist, vv, xlim = c(0,350000), ylim = c(0,25), pch = 16)
+plot(NA, NA, xlim = c(0,350000), ylim = c(0,25))
 for (i in 1:100) {
    no2.sf$random = sample(no2.sf$NO2)
    vv = variogram(random~1, no2.sf, width = 50000, cutoff = 350000)
    lines(vv$dist, vv$gamma, col = 'grey')
 }
+points(vv$dist, vv$gamma, pch = 16)
+```
+
+Note that the width of the "envelope" will depend on the width of the distance bins:
+
+```{r}
+par(xaxs="i", yaxs = "i")
+vv = variogram(NO2~1, no2.sf, width = 20000, cutoff = 350000)
+plot(NA, NA, xlim = c(0,350000), ylim = c(0,25))
+for (i in 1:100) {
+   no2.sf$random = sample(no2.sf$NO2)
+   vv = variogram(random~1, no2.sf, width = 20000, cutoff = 350000)
+   lines(vv$dist, vv$gamma, col = 'grey')
+}
+points(vv$dist, vv$gamma, pch = 16)
 ```
 
 How sensible is a null hypothesis of zero spatial correlation?
